@@ -624,3 +624,22 @@ body.building .tx.tx-on { clip-path: inset(-4px -4px -4px -4px); }
 .g-line { vector-effect: none; stroke-width: 3; stroke-dasharray: 600; stroke-dashoffset: 600; }
 .in .g-line, .built .g-line { stroke-dashoffset: 0; }
 .g-lbl-end { top: -2px; right: 24px; }
+
+/* CV (PDF) download: visible in the top bar and the footer */
+.cv-ic { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.cv-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px 8px 10px; border-radius: 999px; background: var(--ink); color: var(--bg); text-decoration: none; font: 600 13px/1 var(--sans); white-space: nowrap; transition: transform .15s ease-out, box-shadow .15s ease-out; }
+.cv-btn small { font: 600 10px/1 var(--mono); padding: 3px 5px; border-radius: 5px; background: var(--accent); color: #fff; letter-spacing: .04em; }
+.cv-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgb(0 0 0 / .18); }
+.cv-btn .cv-ic { animation: cv-nudge 2.4s ease-in-out infinite; }
+@keyframes cv-nudge { 0%, 70%, 100% { transform: none; } 80% { transform: translateY(2px); } 90% { transform: translateY(-1px); } }
+@media (max-width: 1180px) { .nav nav { gap: 16px; } .nav nav a { font-size: 13px; } }
+@media (max-width: 1060px) { .nav nav { display: none; } .cv-btn { margin-left: auto; } }
+@media (max-width: 760px) { .ops-btn { margin-left: 0; } }
+@media (max-width: 440px) { .nav-inner { gap: 8px; } .ops-btn { padding: 7px 10px 7px 8px; font-size: 12px; gap: 6px; } .ops-ic { width: 18px; height: 18px; } .cv-btn { padding: 7px 9px 7px 8px; font-size: 12px; } .cv-btn small { display: none; } }
+@media (max-width: 374px) { .cv-btn span { display: none; } .cv-btn { padding: 8px; } }
+
+.footer { align-items: center; }
+.cv-foot { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px 12px 14px; border-radius: 14px; background: var(--accent); color: #fff; text-decoration: none; font: 600 15px/1 var(--sans); box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 35%, transparent); transition: transform .15s ease-out, box-shadow .15s ease-out; }
+.cv-foot .cv-ic { width: 22px; height: 22px; }
+.cv-foot small { font: 600 11px var(--mono); opacity: .85; margin-left: 4px; }
+.cv-foot:hover { transform: translateY(-2px); box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 45%, transparent); }
