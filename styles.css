@@ -728,3 +728,34 @@ body.building .tx.tx-on { clip-path: inset(-4px -4px -4px -4px); }
   .lv-end { border-color: var(--good); background: color-mix(in srgb, var(--good) 12%, var(--surface)); }
   .lv-mis { background: transparent; border-style: dashed; text-align: center; animation: none; }
 }
+
+/* ───────── Operations wallpaper (fixed, very faint) ───────── */
+:root { --wall-ink: #6b5a4c; --wall-op: .07; --wall-glow-a: color-mix(in srgb, var(--accent) 10%, transparent); --wall-glow-b: color-mix(in srgb, #2e6bd9 6%, transparent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --wall-ink: #f1efe9; --wall-op: .06; } }
+:root[data-theme="dark"] { --wall-ink: #f1efe9; --wall-op: .06; }
+.wallpaper { position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(900px 600px at 100% 0%, var(--wall-glow-a), transparent 60%),
+    radial-gradient(800px 600px at 0% 100%, var(--wall-glow-b), transparent 60%); }
+.wallpaper::before { content: ""; position: absolute; inset: -320px 0 0 0; opacity: var(--wall-op); background: var(--wall-ink);
+  -webkit-mask: url("wallpaper.svg") 0 0 / 320px 320px repeat; mask: url("wallpaper.svg") 0 0 / 320px 320px repeat;
+  animation: wall-drift 60s linear infinite; }
+@keyframes wall-drift { to { transform: translateY(320px); } }
+body { background-color: var(--bg); }
+main, .nav, footer { position: relative; }
+/* cards stay solid so the pattern never sits behind text */
+.tile, .case-visual, .skill-group, .paper, .store, .tk-hub, .tk-panel, .logic, .beyond-card, .pipeline, .term { background-clip: padding-box; }
+
+/* ───────── Back-to-top arrow ───────── */
+.to-top { position: fixed; right: 26px; bottom: 92px; z-index: 69; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: var(--surface); color: var(--ink); cursor: pointer; box-shadow: 0 8px 22px rgb(0 0 0 / .14);
+  opacity: 0; transform: translateY(12px) scale(.9); pointer-events: none; transition: opacity .25s ease-out, transform .25s ease-out, box-shadow .15s ease-out; }
+.to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+.to-top:hover { box-shadow: 0 12px 28px rgb(0 0 0 / .2); transform: translateY(-2px); }
+.to-top .tt-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.tt-ring circle { fill: none; stroke: var(--line); stroke-width: 3; }
+.tt-ring .tt-prog { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; transition: stroke-dashoffset .1s linear; }
+.tt-arrow { position: relative; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.to-top:hover .tt-arrow { animation: tt-bounce .6s ease-out; }
+@keyframes tt-bounce { 40% { transform: translateY(-3px); } }
+body.building .to-top { opacity: 0; pointer-events: none; }
+@media (max-width: 520px) { .to-top { right: 18px; bottom: 80px; width: 44px; height: 44px; } }

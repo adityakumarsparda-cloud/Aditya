@@ -200,5 +200,18 @@
     show(0);
   }
 
+  // Back-to-top arrow: appears after scrolling, ring shows how far down the page you are
+  const toTop = document.getElementById('toTop');
+  if (toTop) {
+    const prog = toTop.querySelector('.tt-prog');
+    const upd = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      toTop.classList.toggle('show', scrollY > innerHeight * 0.6);
+      prog.style.strokeDashoffset = String(100 - (max > 0 ? (scrollY / max) * 100 : 0));
+    };
+    addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+    toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
   $('yr').textContent = new Date().getFullYear();
 })();

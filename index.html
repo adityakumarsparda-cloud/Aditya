@@ -14,8 +14,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    /* Always open at the top of the page, even after a refresh or with a #section in the address */
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    if (location.hash) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+    window.scrollTo(0, 0);
+    addEventListener('load', function () { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); });
+    addEventListener('pageshow', function (e) { if (e.persisted) window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); });
+  </script>
 </head>
 <body>
+  <div class="wallpaper" aria-hidden="true"></div>
   <a class="skip" href="#main">Skip to content</a>
   <div class="progress" aria-hidden="true"><span id="progress"></span></div>
 
@@ -620,6 +629,10 @@
     <a class="cv-foot" href="Aditya_Kumar_CV.pdf" download><svg class="cv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M12 11v6M9.5 14.5L12 17l2.5-2.5"/></svg><span>Download CV <small>PDF</small></span></a>
   </footer>
 
+  <button type="button" class="to-top" id="toTop" aria-label="Back to top">
+    <svg class="tt-ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21"/><circle class="tt-prog" cx="24" cy="24" r="21" pathLength="100"/></svg>
+    <svg class="tt-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></svg>
+  </button>
   <a class="wa-float" href="https://wa.me/917719600906?text=Hi%20Aditya%2C%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect." target="_blank" rel="noopener" aria-label="Connect me now on WhatsApp"><svg class="wa-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="wa-bubble" d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5z"/><path class="wa-phone" d="M8.4 7.6c.2-.4.5-.5.8-.5h.6c.2 0 .4.1.5.4l.8 1.9c.1.2 0 .5-.1.7l-.6.7c-.1.1-.1.3 0 .5.6 1.1 1.5 2 2.6 2.6.2.1.4.1.5 0l.7-.8c.2-.2.4-.2.7-.1l1.9.9c.2.1.4.3.4.5v.6c0 .3-.2.6-.5.8-.6.4-1.4.6-2.2.4-2.6-.6-4.9-2.9-5.5-5.5-.1-.8 0-1.5.4-2.1z"/></svg><span>Connect me now</span></a>
 
   <script src="script.js"></script>
