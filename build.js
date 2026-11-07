@@ -17,6 +17,7 @@
     '#startup .section-head', '#startup .store', '#startup .tile',
     '#experience .section-head', '#experience .timeline > li:not(.rail)',
     '#skills .section-head', '#skills .skill-group',
+    '#beyond .section-head', '#beyond .pipeline', '#beyond .beyond-card', '#beyond .proof',
     '#education .kicker', '#education .edu li', '#education .paper',
     '#contact .kicker', '#contact h2', '#contact .lede', '#contact .cta', '#contact .small-link',
   ];

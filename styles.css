@@ -526,3 +526,101 @@ body.sw-scroll .bt:not(.built) { opacity: 0 !important; transform: translateY(8p
 /* Tour: text is typed out piece by piece */
 body.building .tx { clip-path: inset(0 100% 0 0); }
 body.building .tx.tx-on { clip-path: inset(-4px -4px -4px -4px); }
+
+/* ───────── Doc flow: arrows + effects ───────── */
+.df-arrow { position: relative; display: inline-flex; align-items: center; gap: 4px; width: 64px; height: 18px; background: none; overflow: visible; }
+.df-arrow::before { content: ""; position: absolute; left: 0; right: 8px; top: 50%; height: 2px; margin-top: -1px; background: repeating-linear-gradient(90deg, var(--accent) 0 6px, transparent 6px 11px); background-size: 22px 2px; animation: dashflow .7s linear infinite; }
+.df-arrow::after { content: ""; position: absolute; right: 0; top: 50%; margin-top: -6px; border: 6px solid transparent; border-left: 9px solid var(--accent); border-right: 0; filter: drop-shadow(0 0 4px var(--accent)); }
+.df-arrow i { position: absolute; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: dfdot 1.5s linear infinite; }
+.df-arrow i:nth-child(2) { animation-delay: .5s; } .df-arrow i:nth-child(3) { animation-delay: 1s; }
+@keyframes dashflow { to { background-position: 22px 0; } }
+@keyframes dfdot { 0% { left: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: 50px; opacity: 0; } }
+.df-engine { position: relative; box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent); animation: engine-glow 2s ease-out infinite; }
+@keyframes engine-glow { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); } 70%, 100% { box-shadow: 0 0 0 10px transparent; } }
+.df-mini { display: inline-grid; place-items: center; font: 700 20px/1 var(--sans); color: var(--accent); animation: mini 1.2s ease-in-out infinite; }
+@keyframes mini { 0%, 100% { transform: translateX(0); opacity: .5; } 50% { transform: translateX(3px); opacity: 1; } }
+.df-docs { align-items: center; gap: 6px; }
+.df-doc { position: relative; }
+.df-tick { position: absolute; top: -7px; right: -7px; width: 18px; height: 18px; border-radius: 50%; background: var(--good); display: grid; place-items: center; opacity: 0; transform: scale(.3); animation: tick 4.5s ease-out infinite; animation-delay: calc(var(--d) * .45s); }
+.df-tick-ic { width: 11px; height: 11px; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes tick { 0%, 14% { opacity: 0; transform: scale(.3); } 22%, 80% { opacity: 1; transform: scale(1); } 95%, 100% { opacity: 0; transform: scale(.6); } }
+.df-doc { box-shadow: 0 0 0 0 transparent; }
+@keyframes doc-pop { 0%, 8% { opacity: .3; transform: translateY(6px); } 18%, 80% { opacity: 1; transform: none; border-color: var(--accent); box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 22%, transparent); } 95%, 100% { opacity: .3; transform: none; } }
+@media (max-width: 640px) { .df-arrow { width: 36px; } @keyframes dfdot { 0% { left: 0; opacity: 0; } 100% { left: 24px; opacity: 0; } } }
+
+/* ───────── Growth graph (start → month 8) ───────── */
+.growth { position: relative; margin: 18px 0 6px; height: 150px; }
+.growth svg { width: 100%; height: 100%; overflow: visible; }
+.g-grid line { stroke: color-mix(in srgb, var(--bg) 14%, transparent); stroke-dasharray: 3 6; vector-effect: non-scaling-stroke; }
+.g-area { fill: url(#gfill); opacity: 0; transition: opacity .8s ease-out .9s; }
+.g-line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 60%, transparent)); transition: stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1) .2s; }
+.in .g-line, .built .g-line { stroke-dashoffset: 0; }
+.in .g-area, .built .g-area { opacity: 1; }
+.g-dot { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--accent); }
+.g-start { left: 3.5%; top: 85.3%; background: color-mix(in srgb, var(--bg) 70%, transparent); }
+.g-end { left: 96.5%; top: 10.7%; opacity: 0; transform: scale(.3); transition: opacity .3s ease-out 1.7s, transform .4s cubic-bezier(.16,1,.3,1) 1.7s; }
+.in .g-end, .built .g-end { opacity: 1; transform: none; animation: endpulse 2s ease-out 2.2s infinite; }
+@keyframes endpulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); } 70%, 100% { box-shadow: 0 0 0 14px transparent; } }
+.g-lbl { position: absolute; font: 500 11.5px var(--mono); white-space: nowrap; }
+.g-lbl-start { left: 0; bottom: -4px; color: color-mix(in srgb, var(--bg) 65%, transparent); }
+.g-lbl-end { right: 0; top: 22%; color: var(--accent); }
+@media (max-width: 520px) { .growth { height: 110px; } }
+
+/* ───────── Life Beyond Work ───────── */
+.pipeline { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; padding: 24px; margin-bottom: 14px; border-radius: var(--radius); border: 1px solid var(--line); background: linear-gradient(120deg, var(--surface), color-mix(in srgb, var(--accent) 7%, var(--surface))); }
+.pl-step { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); animation: plglow 5s ease-in-out infinite; }
+.pl-step .ic { width: 20px; height: 20px; color: var(--accent); }
+.pl-step b { font: 600 14px var(--sans); }
+.pl-step small { font: 500 11px var(--mono); color: var(--ink-3); }
+.pipeline > :nth-child(1) { animation-delay: 0s; } .pipeline > :nth-child(3) { animation-delay: 1s; } .pipeline > :nth-child(5) { animation-delay: 2s; } .pipeline > :nth-child(7) { animation-delay: 3s; } .pipeline > :nth-child(9) { animation-delay: 4s; }
+@keyframes plglow { 0%, 22%, 100% { border-color: var(--line); box-shadow: none; transform: none; } 6%, 16% { border-color: var(--accent); box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 25%, transparent); transform: translateY(-3px); } }
+.pl-live .ic { color: var(--good); }
+.pl-link { position: relative; width: 42px; height: 2px; background: var(--line); border-radius: 2px; }
+.pl-link::after { content: ""; position: absolute; right: -2px; top: -4px; border: 5px solid transparent; border-left: 7px solid var(--line); border-right: 0; }
+.pl-link i { position: absolute; top: -3px; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: plrun 1.2s linear infinite; }
+@keyframes plrun { 0% { left: 0; opacity: 0; } 20%, 80% { opacity: 1; } 100% { left: 34px; opacity: 0; } }
+@media (max-width: 640px) { .pl-link { width: 18px; } @keyframes plrun { 0% { left: 0; opacity: 0; } 100% { left: 12px; opacity: 0; } } }
+
+.beyond-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 1000px) { .beyond-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .beyond-grid { grid-template-columns: 1fr; } }
+.beyond-card { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); transition: transform .15s ease-out, border-color .15s ease-out; }
+.beyond-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.beyond-card.reveal.in:hover { transform: translateY(-4px); }
+.beyond-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .2s ease-out; background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%); }
+.beyond-card:hover::after { opacity: 1; }
+.beyond-card h3 { font: 400 26px/1.1 var(--serif); }
+.beyond-card p { color: var(--ink-2); font-size: 14.5px; }
+.beyond-card .chips { margin-top: auto; }
+.bc-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; color: #fff; animation: bob 4s ease-in-out infinite; }
+.bc-ic .ic { width: 26px; height: 26px; stroke-width: 1.8; }
+.bc-claude { background: linear-gradient(135deg, #d97757, #b5502f); }
+.bc-claude .ic { animation: spin-slow 8s linear infinite; }
+.bc-gh { background: linear-gradient(135deg, #3a3a3a, #111); animation-delay: .5s; }
+.bc-vc { background: linear-gradient(135deg, #222, #000); animation-delay: 1s; }
+.bc-learn { background: linear-gradient(135deg, var(--good), #1f6b30); animation-delay: 1.5s; }
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+
+.proof { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; align-items: center; margin-top: 14px; }
+@media (max-width: 860px) { .proof { grid-template-columns: 1fr; } }
+.term { border-radius: var(--radius); overflow: hidden; background: #111110; border: 1px solid #2e2d2a; box-shadow: 0 18px 40px rgb(0 0 0 / .18); }
+.term-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #1c1c1a; }
+.term-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a3a37; }
+.term-bar i:first-child { background: #ff6159; } .term-bar i:nth-child(2) { background: #ffbd2e; } .term-bar i:nth-child(3) { background: #28c941; }
+.term-bar span { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; font: 500 12px var(--mono); color: #9a968c; }
+.term-ic { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.term-body { margin: 0; padding: 18px; font: 500 13px/1.9 var(--mono); color: #e9e6df; white-space: pre-wrap; overflow-wrap: anywhere; }
+.term-body em { font-style: normal; color: #ff7a3d; }
+.term-body u { text-decoration: none; color: #69db7c; }
+.tl { display: inline-block; clip-path: inset(0 100% 0 0); }
+.term.play .tl { animation: tline .7s steps(28, end) forwards; animation-delay: calc(var(--l) * .75s); }
+@keyframes tline { to { clip-path: inset(0 -4px 0 0); } }
+.proof-note { display: flex; gap: 12px; align-items: flex-start; font-size: 17px; color: var(--ink-2); }
+.proof-note .ic { flex: none; width: 34px; height: 34px; padding: 7px; border-radius: 50%; background: var(--good); color: #fff; stroke-width: 2.6; }
+.proof-note strong { color: var(--ink); }
+/* fixes: arrowhead (clear the old bar style) + full-length graph line + label position */
+.df-arrow::after { inset: auto; left: auto; right: 0; top: 50%; width: 0; height: 0; background: none; animation: none; transform: none; }
+.df-arrow { overflow: visible; background: none; height: 18px; border-radius: 0; }
+.g-line { vector-effect: none; stroke-width: 3; stroke-dasharray: 600; stroke-dashoffset: 600; }
+.in .g-line, .built .g-line { stroke-dashoffset: 0; }
+.g-lbl-end { top: -2px; right: 24px; }

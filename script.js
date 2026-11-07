@@ -34,7 +34,7 @@
   };
 
   // Reveal + animate on view
-  const targets = document.querySelectorAll('.section-head, .tile, .case, .timeline > li:not(.rail), .skill-group, .edu li, .paper, .contact h2');
+  const targets = document.querySelectorAll('.section-head, .tile, .case, .timeline > li:not(.rail), .skill-group, .edu li, .paper, .contact h2, .beyond-card');
   targets.forEach(el => el.classList.add('reveal'));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
@@ -132,7 +132,7 @@
   addEventListener('scroll', onScrollFx, { passive: true }); addEventListener('resize', onScrollFx); onScrollFx();
 
   // Cursor glow on cards
-  document.querySelectorAll('.tile, .skill-group, .case-visual, .paper').forEach(el => {
+  document.querySelectorAll('.tile, .skill-group, .case-visual, .paper, .beyond-card').forEach(el => {
     el.addEventListener('pointermove', (e) => {
       const r = el.getBoundingClientRect();
       el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
@@ -164,6 +164,10 @@
       if (en.isIntersecting) { setTimeout(tick, 900); timer = setInterval(tick, 2600); }
     }).observe(store);
   }
+
+  // Terminal in "Life Beyond Work": types its lines once it's on screen
+  const term = document.querySelector('.term');
+  if (term) new IntersectionObserver(([en], o) => { if (en.isIntersecting) { term.classList.add('play'); o.disconnect(); } }, { threshold: 0.4 }).observe(term);
 
   $('yr').textContent = new Date().getFullYear();
 })();
