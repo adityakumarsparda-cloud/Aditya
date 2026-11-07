@@ -74,5 +74,48 @@
     setTimeout(() => (btn.textContent = 'Copy email'), 2000);
   });
 
+  // Particle constellation with cursor parallax, adapted from VibeKit (MIT)
+  const cv = document.getElementById('particles');
+  if (cv && !reduce) {
+    const ctx = cv.getContext('2d');
+    let w = 0, h = 0, raf = 0, mx = 0, my = 0, visible = true;
+    const pts = [];
+    const accent = () => getComputedStyle(root).getPropertyValue('--accent').trim() || '#d9480f';
+    const resize = () => {
+      const r = cv.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+      w = r.width; h = r.height; cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.min(Math.floor(w * h / 14000), 90);
+      pts.length = 0;
+      for (let i = 0; i < n; i++) pts.push({ x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - .5) * .18, vy: (Math.random() - .5) * .18,
+        r: .6 + Math.random() * 1.4, d: Math.random(), hue: Math.random() > .7 });
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      const a = accent();
+      for (const p of pts) {
+        p.x += p.vx + mx * p.d * .0008; p.y += p.vy + my * p.d * .0008;
+        if (p.x < -10) p.x = w + 10; if (p.x > w + 10) p.x = -10;
+        if (p.y < -10) p.y = h + 10; if (p.y > h + 10) p.y = -10;
+        const al = .25 + p.d * .55;
+        ctx.globalAlpha = p.hue ? al : al * .5;
+        ctx.fillStyle = p.hue ? a : '#9a968c';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (.5 + p.d * .7), 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.strokeStyle = a; ctx.lineWidth = .4;
+      for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, dist = Math.hypot(dx, dy);
+        if (dist < 90) { ctx.globalAlpha = (1 - dist / 90) * .2; ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke(); }
+      }
+      ctx.globalAlpha = 1;
+      raf = visible ? requestAnimationFrame(draw) : 0;
+    };
+    resize(); addEventListener('resize', resize);
+    addEventListener('pointermove', (e) => { const r = cv.getBoundingClientRect(); mx = e.clientX - r.left - w / 2; my = e.clientY - r.top - h / 2; }, { passive: true });
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(draw); }).observe(cv);
+    raf = requestAnimationFrame(draw);
+  }
+
   $('yr').textContent = new Date().getFullYear();
 })();

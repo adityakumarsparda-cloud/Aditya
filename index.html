@@ -37,6 +37,32 @@
   <main id="main">
     <!-- HERO -->
     <section class="hero wrap" id="top">
+      <div class="hero-fx" aria-hidden="true">
+        <canvas id="particles"></canvas>
+        <svg class="circuits" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+          <defs><radialGradient id="node-glow"><stop offset="0%" stop-color="var(--accent)" stop-opacity="1"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></radialGradient></defs>
+          <g stroke="var(--accent)" stroke-width="0.8" fill="none" opacity="0.5">
+            <path class="c-draw" d="M 1220 160 L 1000 160 L 970 190 L 970 290 L 920 330 L 820 330"/>
+            <circle cx="1000" cy="160" r="3" fill="var(--accent)" class="c-node"/>
+            <circle cx="970" cy="290" r="3" fill="var(--accent)" class="c-node"/>
+            <circle cx="820" cy="330" r="4" fill="var(--accent)" class="c-node-glow"/>
+            <circle cx="820" cy="330" r="14" fill="url(#node-glow)" class="c-node-glow"/>
+          </g>
+          <g stroke="var(--accent)" stroke-width="0.6" fill="none" opacity="0.4">
+            <path class="c-draw" style="animation-delay:.4s" d="M 1220 620 L 1050 620 L 1020 590 L 920 590 L 880 550 L 720 550"/>
+            <circle cx="1050" cy="620" r="2.5" fill="var(--accent)" class="c-node"/>
+            <circle cx="920" cy="590" r="2.5" fill="var(--accent)" class="c-node"/>
+            <circle cx="720" cy="550" r="3" fill="var(--accent)" class="c-node-glow"/>
+          </g>
+          <g stroke="var(--accent)" stroke-width="0.6" fill="none" opacity="0.3">
+            <path class="c-draw" style="animation-delay:.8s" d="M -20 740 L 150 740 L 180 710 L 280 710 L 320 670 L 480 670"/>
+            <circle cx="150" cy="740" r="2.5" fill="var(--accent)" class="c-node"/>
+            <circle cx="480" cy="670" r="3" fill="var(--accent)" class="c-node-glow"/>
+          </g>
+          <circle r="2.5" fill="var(--accent)" class="c-pulse c-pulse-a"/>
+          <circle r="2.5" fill="var(--accent)" class="c-pulse c-pulse-b"/>
+        </svg>
+      </div>
       <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> Open to new roles · Chandigarh, open to relocate</p>
       <h1>I keep products <em>moving</em> — from shelf to doorstep, on time.</h1>
       <p class="lede">I'm <strong>Aditya Kumar</strong>, an Operations &amp; Inventory Manager with 4+ years across healthcare, D2C e‑commerce and marketplaces. I build the systems that make stock accurate, dispatch fast and growth possible.</p>
