@@ -70,14 +70,14 @@
       el.textContent.trim() && !el.querySelector(TEXT_SEL));
     return [...new Set(all)];
   }
-  async function typeTexts(block, c, isAborted) {
+  async function typeTexts(block, c, isAborted, pace = 1) {
     const items = textsIn(block);
     const max = 18;
     for (let k = 0; k < items.length; k++) {
       const t = items[k];
       if (isAborted() || k >= max) { t.classList.add('tx-on'); continue; }
       const n = t.textContent.trim().length;
-      const d = Math.max(120, Math.min(n * 7, 420));
+      const d = Math.max(90, Math.min(n * 7, 420) * pace);
       t.style.transition = `clip-path ${d}ms steps(${Math.max(4, Math.min(n, 36))}, end)`;
       t.classList.add('tx-on');
       const r = t.getBoundingClientRect();
@@ -102,7 +102,7 @@
     await moveCursor(c, p.x + p.w - 6, p.y + p.h - 6, speed.draw);
     el.classList.add('built', 'in');
     if (el.matches('.hero h1')) await typeHeadline(el, c, isAborted);
-    if (speed.text) await typeTexts(el, c, isAborted);
+    if (speed.text) await typeTexts(el, c, isAborted, speed.textK || 1);
     await sleep(speed.hold);
     box.classList.add('done');
     setTimeout(() => box.remove(), 400);
@@ -120,7 +120,7 @@
   }
 
   /* ---------- 1) Scroll mode ---------- */
-  const SCROLL_SPEED = { move: 300, draw: 260, hold: 120 };
+  const SCROLL_SPEED = { move: 170, draw: 160, hold: 50 };
   let scrollTargets = [], queue = [], io = null, scrollOn = false;
 
   function startScrollMode() {
@@ -142,7 +142,7 @@
     if (!scrollOn || !queue.length) return;
     ensureLayer();
     // If the visitor scrolls fast, don't make them wait: reveal anything that has fallen behind.
-    while (queue.length > CREW.length * 2) queue.shift().classList.add('built', 'in');
+    while (queue.length > CREW.length) queue.shift().classList.add('built', 'in');
     for (const c of cursors) {
       if (c.busy || !queue.length) continue;
       const el = queue.shift();
@@ -164,8 +164,8 @@
   }
 
   /* ---------- 2) Full tour ---------- */
-  // Tuned so the full tour lasts about 45 seconds on laptops and on phones (phones have a longer page).
-  const tourSpeed = () => { const k = innerWidth < 700 ? 0.78 : 1.2; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true }; };
+  // Tuned so the full tour lasts about 35 seconds on laptops and on phones (phones have a longer page).
+  const tourSpeed = () => { const k = innerWidth < 700 ? 0.6 : 0.9; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true, textK: innerWidth < 700 ? 0.58 : 0.8 }; };
   let touring = false, aborted = false, pill = null, tourTargets = [];
   const smoothScrollTo = (y) => {
     const max = document.documentElement.scrollHeight - innerHeight;

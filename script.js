@@ -56,7 +56,8 @@
 
   // Particle constellation with cursor parallax, adapted from VibeKit (MIT)
   const cv = document.getElementById('particles');
-  if (cv && !reduce) {
+  // skipped on phone-sized screens: it's the heaviest effect and made scrolling choppy on phones
+  if (cv && !reduce && innerWidth >= 700) {
     const ctx = cv.getContext('2d');
     let w = 0, h = 0, raf = 0, mx = 0, my = 0, visible = true;
     const pts = [];

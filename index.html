@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Aditya Kumar · Operations &amp; Inventory</title>
-  <meta name="description" content="Aditya Kumar — Operations and Inventory Manager. Runs dispatch, logistics and stock for 12+ client locations at GLEUHR Wellness. Previously scaled e-commerce revenue from ₹50L to ₹4.3Cr in 8 months, cut order processing from 48 hours to 10 minutes, 98%+ on-time dispatch.">
+  <meta name="description" content="Aditya Kumar — Operations and Inventory Manager. Runs dispatch, logistics and stock for 12+ client locations at GLEUHR Wellness. Previously scaled e-commerce revenue from ₹50L to ₹4.3Cr in 8 months, cut dispatch TAT from 48 hours to 24 hours, 98%+ on-time dispatch.">
   <meta property="og:title" content="Aditya Kumar · Operations & Inventory">
-  <meta property="og:description" content="Supply chain, inventory and dispatch operator. ₹50L → ₹4.3Cr e-commerce growth. 48h → 10min order processing. 98%+ on-time SLA.">
+  <meta property="og:description" content="Supply chain, inventory and dispatch operator. ₹50L → ₹4.3Cr e-commerce growth. 48hr → 24hr dispatch TAT. 98%+ on-time SLA.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#f6f4ef">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23141414'/><text x='50%' y='56%' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-size='34' fill='%23f6f4ef'>AK</text></svg>">
@@ -134,13 +134,13 @@
             <rect x="150" y="282" width="62" height="38" rx="4" class="tr-box"/>
             <path d="M212 294 h20 l12 14 v12 h-32 z" class="tr-cab"/>
             <path d="M218 298 h12 l7 9 h-19 z" class="tr-win"/>
-            <text x="181" y="306" class="tr-label">AK</text>
+            <text x="181" y="305" class="tr-label">ORDERS</text>
             <circle cx="168" cy="322" r="7" class="tr-wheel"/><circle cx="228" cy="322" r="7" class="tr-wheel"/>
             <g class="speed"><line x1="128" y1="292" x2="142" y2="292"/><line x1="120" y1="302" x2="142" y2="302"/><line x1="132" y1="312" x2="142" y2="312"/></g>
           </g>
           <!-- floating stat chips (real numbers from CV) -->
           <g class="chip chip-1"><rect x="196" y="96" width="132" height="36" rx="18"/><circle cx="216" cy="114" r="5" class="chip-dot"/><text x="228" y="119">98%+ on time</text></g>
-          <g class="chip chip-2"><rect x="24" y="64" width="118" height="36" rx="18"/><text x="40" y="87">48h → 10 min</text></g>
+          <g class="chip chip-2"><rect x="18" y="64" width="150" height="36" rx="18"/><text x="34" y="87">48hr → 24hr TAT</text></g>
           <g class="chip chip-3"><rect x="300" y="352" width="122" height="32" rx="16"/><text x="316" y="373">₹50L → ₹4.3Cr</text></g>
         </svg>
       </figure>
@@ -234,9 +234,9 @@
             <p class="tile-note">~8.6× in 8 months, including Blinkit, Zepto &amp; Swiggy Instamart</p>
           </article>
           <article class="tile">
-            <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Order processing</p>
-            <p class="big"><span>48h</span><span class="arrow">→</span><span class="accent">10m</span></p>
-            <p class="tile-note">via an automation I built</p>
+            <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Dispatch TAT</p>
+            <p class="big tat-big"><span>48hr</span><span class="arrow">→</span><span class="accent">24hr</span></p>
+            <p class="tile-note">dispatch turnaround halved, via an automation I built</p>
           </article>
           <article class="tile">
             <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>On-time dispatch SLA</p>
@@ -341,19 +341,19 @@
       <article class="case">
         <div class="case-text">
           <p class="case-meta"><span class="badge-before">Before</span> Sova Health · Automation</p>
-          <h3><svg class="h3-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Turning a two-day order queue into ten minutes</h3>
+          <h3><svg class="h3-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Halving dispatch TAT: 48 hours to 24</h3>
           <dl>
-            <dt>Issue</dt><dd>Orders took around 48 hours to process before they could move to dispatch.</dd>
-            <dt>How I handled it</dt><dd>Built an automation for the order-processing flow on the Unicommerce dispatch system.</dd>
-            <dt>Result</dt><dd>Turnaround cut to <strong>~10 minutes</strong> — a 99.7% reduction.</dd>
+            <dt>Issue</dt><dd>Dispatch turnaround (TAT) was around 48 hours from order to dispatch.</dd>
+            <dt>How I handled it</dt><dd>Built an automation for the order-to-dispatch flow on the Unicommerce dispatch system.</dd>
+            <dt>Result</dt><dd>Dispatch TAT cut to <strong>24 hours</strong>, 50% faster.</dd>
           </dl>
         </div>
-        <figure class="case-visual" aria-label="Comparison: 48 hours before, 10 minutes after">
+        <figure class="case-visual" aria-label="Comparison: 48 hours dispatch TAT before, 24 hours after">
           <div class="race" data-animate>
-            <div class="lane"><span class="lane-lbl">Before</span><div class="track"><div class="runner slow"></div></div><span class="lane-val">48 h</span></div>
-            <div class="lane"><span class="lane-lbl">After</span><div class="track"><div class="runner fast"></div></div><span class="lane-val accent">10 min</span></div>
+            <div class="lane"><span class="lane-lbl">Before</span><div class="track"><div class="runner slow"></div></div><span class="lane-val">48 hr</span></div>
+            <div class="lane"><span class="lane-lbl">After</span><div class="track"><div class="runner fast"></div></div><span class="lane-val accent">24 hr</span></div>
           </div>
-          <figcaption>Bar length = processing time, to scale (10 min is 0.35% of 48 h)</figcaption>
+          <figcaption>Bar length = dispatch TAT, to scale (24 hr is half of 48 hr)</figcaption>
         </figure>
       </article>
     </section>
@@ -362,14 +362,14 @@
     <section class="wrap section" id="startup">
       <div class="section-head">
         <p class="kicker"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2"/><path d="M9 15l-3-3c1-4 4-8 9-9 2-.3 4-.2 6 0 .2 2 .3 4 0 6-1 5-5 8-9 9z"/><circle cx="15" cy="9" r="1.8"/></svg>03 — Startup</p>
-        <h2>Built my own D2C brand on Shopify</h2>
-        <p class="section-sub">A Shopify store I built, selling one multipurpose cream made for everyone. It's still running and still growing.</p>
+        <h2>Built my own D2C brand: <span class="brand-name">Glass.skin</span></h2>
+        <p class="section-sub">Glass.skin is a Shopify store I built, selling one multipurpose cream made for everyone. It's still running and still growing.</p>
       </div>
       <div class="startup">
         <figure class="store" aria-label="Illustration of the Shopify store: multipurpose cream for everyone, priced at ₹1,499, with orders coming in">
           <div class="store-bar" aria-hidden="true">
             <span class="store-dots"><i></i><i></i><i></i></span>
-            <span class="store-url"><svg class="store-url-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Shopify store</span>
+            <span class="store-url"><svg class="store-url-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><b>Glass.skin</b><span class="store-url-sub">· Shopify store</span></span>
             <span class="store-cart"><svg class="store-cart-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h11l2-8H6.2"/></svg><b id="cartCount">0</b></span>
           </div>
           <div class="store-body">
@@ -379,13 +379,13 @@
               <rect x="34" y="34" width="132" height="34" rx="12" class="jar-lid"/>
               <rect x="34" y="54" width="132" height="8" class="jar-lid-band"/>
               <rect x="56" y="88" width="88" height="60" rx="10" class="jar-label"/>
-              <path d="M100 98c-10 6-12 16-6 24 8-2 14-10 6-24z" class="jar-leaf"/>
-              <path d="M94 122c2-8 4-12 8-16" class="jar-leaf-vein"/>
-              <text x="100" y="140" class="jar-text">MULTIPURPOSE</text>
+              <path d="M100 93c-7 4-8 11-4 17 5-1 9-7 4-17z" class="jar-leaf"/>
+              <path d="M96 110c1-6 3-9 6-12" class="jar-leaf-vein"/>
+              <text x="100" y="128" class="jar-brand">Glass.skin</text><text x="100" y="142" class="jar-text">MULTIPURPOSE</text>
               <path d="M56 70 Q66 64 60 92" class="jar-shine"/>
             </svg></div>
             <div class="store-info">
-              <p class="store-tag">Multipurpose cream</p>
+              <p class="store-tag">Glass.skin · Multipurpose cream</p>
               <p class="store-title">One cream, made for everyone</p>
               <p class="store-price">₹1,499</p>
               <span class="store-add" aria-hidden="true"><svg class="store-add-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h11l2-8H6.2"/></svg>Add to cart</span>
@@ -451,7 +451,7 @@
             <p class="org"><svg class="org-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Sova Health · Gurugram</p>
             <ul>
               <li>Scaled e-commerce revenue from ~₹50 lakh to ₹4.3 crore in 8 months, including Blinkit, Zepto and Swiggy Instamart.</li>
-              <li>Built an automation cutting order processing from ~48 hours to ~10 minutes.</li>
+              <li>Built an automation cutting dispatch TAT from 48 hours to 24 hours.</li>
               <li>Dedicated Zoho manager: custom Zoho CRM and Zoconut workflows for patient lifecycle, follow-ups and escalations, CSAT 95%+.</li>
               <li>1,600+ client accounts and PAN-India dispatch of gut microbiome test kits at 98%+ on-time SLA.</li>
               <li>Shopify order processing and Amazon/Flipkart marketplace ops, reconciliation and refunds.</li>

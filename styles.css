@@ -788,3 +788,15 @@ body.building .to-top { opacity: 0; pointer-events: none; }
 .tk-skills li:hover .sk-ic { background: var(--accent); }
 .tk-skills li:hover .sk-ic svg { stroke: #fff; }
 .tk-bar { margin-top: auto; }
+
+/* Glass.skin brand */
+.brand-name { font-style: italic; background: linear-gradient(100deg, var(--accent) 0%, #e8a27c 35%, var(--accent) 55%, #b5502f 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: brand-shine 4s ease-in-out infinite; padding-right: .06em; }
+@keyframes brand-shine { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.store-url b { font: 700 12.5px var(--sans); color: var(--ink); letter-spacing: -.01em; }
+.store-url-sub { color: var(--ink-3); }
+.jar-brand { font: italic 400 17px var(--serif); fill: #b5502f; text-anchor: middle; }
+.tr-label { font-size: 11px; letter-spacing: .06em; }
+/* 48hr -> 24hr: the "after" bar is half the length */
+.in .runner.fast { width: 50%; }
+.lane { grid-template-columns: 56px 1fr 70px; }
+.tat-big { font-size: clamp(34px, 3.4vw, 44px); flex-wrap: nowrap; white-space: nowrap; }
