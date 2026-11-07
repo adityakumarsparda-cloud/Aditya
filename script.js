@@ -140,11 +140,12 @@
     });
   });
 
-  // Hide the floating WhatsApp button while the contact section (which has its own) is on screen
+  // Floating WhatsApp button
   const waFloat = document.querySelector('.wa-float');
-  const contact = document.getElementById('contact');
-  if (waFloat && contact && 'IntersectionObserver' in window) {
-    new IntersectionObserver(([en]) => waFloat.classList.toggle('hide', en.isIntersecting), { threshold: 0.3 }).observe(contact);
+  // hide it while the hero's own buttons are on screen (no duplicate WhatsApp buttons)
+  const heroCta = document.querySelector('.hero .cta');
+  if (waFloat && heroCta && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => waFloat.classList.toggle('hide', en.isIntersecting), { threshold: 0.1 }).observe(heroCta);
   }
 
   // Startup store mock: cart count ticks up in time with the "New order" toast
@@ -168,6 +169,36 @@
   // Terminal in "Life Beyond Work": types its lines once it's on screen
   const term = document.querySelector('.term');
   if (term) new IntersectionObserver(([en], o) => { if (en.isIntersecting) { term.classList.add('play'); o.disconnect(); } }, { threshold: 0.4 }).observe(term);
+
+  // Toolkit skill map: cycles through the six areas; click a node or tab to choose one
+  const tkData = document.getElementById('tkData');
+  if (tkData) {
+    const areas = JSON.parse(tkData.textContent);
+    const nodes = [...document.querySelectorAll('.tk-node')], spokes = [...document.querySelectorAll('.tk-spoke')], tabs = [...document.querySelectorAll('.tk-tab')];
+    const panel = document.querySelector('.tk-panel'), bar = document.getElementById('tkBar'), runner = document.querySelector('.tk-runner');
+    let cur = 0, timer = 0, paused = false, visible = false;
+    const show = (k) => {
+      cur = k; const a = areas[k];
+      nodes.forEach((n, i) => n.classList.toggle('on', i === k));
+      spokes.forEach((sp, i) => sp.classList.toggle('on', i === k));
+      tabs.forEach((t, i) => { t.classList.toggle('on', i === k); t.setAttribute('aria-selected', i === k); });
+      document.getElementById('tkNum').textContent = String(k + 1).padStart(2, '0');
+      document.getElementById('tkTitle').innerHTML = a.title;
+      document.getElementById('tkDesc').textContent = a.desc;
+      document.getElementById('tkChips').innerHTML = a.chips.map((c, i) => `<li style="--i:${i}">${c}</li>`).join('');
+      panel.classList.remove('swap'); void panel.offsetWidth; panel.classList.add('swap');
+      const sp = spokes[k];
+      runner.style.offsetPath = `path("M${sp.getAttribute('x1')} ${sp.getAttribute('y1')} L${sp.getAttribute('x2')} ${sp.getAttribute('y2')}")`;
+      runner.animate([{ offsetDistance: '0%', opacity: 0 }, { opacity: 1, offset: .2 }, { offsetDistance: '100%', opacity: 1 }], { duration: 700, easing: 'ease-out', fill: 'forwards' });
+      bar.classList.remove('run'); void bar.offsetWidth; if (!paused) bar.classList.add('run');
+    };
+    const loop = () => { clearInterval(timer); timer = setInterval(() => { if (visible && !paused) show((cur + 1) % areas.length); }, 3600); };
+    const pick = (k) => { paused = true; show(k); clearTimeout(pick.t); pick.t = setTimeout(() => { paused = false; show(cur); loop(); }, 12000); };
+    nodes.forEach((n, i) => { n.addEventListener('click', () => pick(i)); n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i); } }); });
+    tabs.forEach((t, i) => t.addEventListener('click', () => pick(i)));
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible && !paused) { show(cur); loop(); } }, { threshold: 0.3 }).observe(document.querySelector('.tk'));
+    show(0);
+  }
 
   $('yr').textContent = new Date().getFullYear();
 })();

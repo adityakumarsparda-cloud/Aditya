@@ -643,3 +643,88 @@ body.building .tx.tx-on { clip-path: inset(-4px -4px -4px -4px); }
 .cv-foot .cv-ic { width: 22px; height: 22px; }
 .cv-foot small { font: 600 11px var(--mono); opacity: .85; margin-left: 4px; }
 .cv-foot:hover { transform: translateY(-2px); box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 45%, transparent); }
+
+/* ───────── Toolkit: skill map + logic chart ───────── */
+.tk { display: grid; grid-template-columns: 1.05fr 1fr; gap: 14px; align-items: stretch; }
+@media (max-width: 900px) { .tk { grid-template-columns: 1fr; } }
+.tk-hub { margin: 0; border-radius: var(--radius); border: 1px solid var(--line); background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 9%, var(--surface)), var(--surface) 65%); padding: 10px; }
+.tk-hub svg { width: 100%; height: auto; display: block; }
+.tk-ring { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 4 6; }
+.tk-spoke { stroke: var(--line); stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.2s linear infinite; transition: stroke .3s ease-out, stroke-width .3s ease-out; }
+.tk-spoke.on { stroke: var(--accent); stroke-width: 3; }
+.tk-core circle { fill: var(--ink); }
+.tk-core .tk-core-halo { fill: none; stroke: var(--accent); stroke-width: 2; opacity: .5; transform-box: fill-box; transform-origin: center; animation: core-pulse 2.4s ease-out infinite; }
+@keyframes core-pulse { 0% { transform: scale(.9); opacity: .7; } 100% { transform: scale(1.35); opacity: 0; } }
+.tk-core-t { font: 400 20px var(--serif); fill: var(--bg); text-anchor: middle; }
+.tk-core-s { font: 500 10px var(--mono); fill: color-mix(in srgb, var(--bg) 65%, transparent); text-anchor: middle; letter-spacing: .04em; }
+.tk-node { cursor: pointer; outline: none; }
+.tk-node .tk-dot { fill: var(--surface); stroke: var(--line); stroke-width: 2; transition: fill .3s ease-out, stroke .3s ease-out; }
+.tk-node .tk-halo { fill: color-mix(in srgb, var(--accent) 18%, transparent); opacity: 0; transform-box: fill-box; transform-origin: center; transition: opacity .3s ease-out; }
+.tk-node text { font: 600 12.5px var(--sans); fill: var(--ink); text-anchor: middle; pointer-events: none; transition: fill .3s ease-out; }
+.tk-node .tk-num { font: 500 9.5px var(--mono); fill: var(--ink-3); }
+.tk-node:hover .tk-dot, .tk-node:focus-visible .tk-dot { stroke: var(--accent); }
+.tk-node.on .tk-dot { fill: var(--accent); stroke: var(--accent); }
+.tk-node.on text { fill: #fff; }
+.tk-node.on .tk-halo { opacity: 1; animation: core-pulse 1.8s ease-out infinite; }
+.tk-runner { fill: var(--accent); filter: drop-shadow(0 0 6px var(--accent)); }
+
+.tk-panel { display: flex; flex-direction: column; gap: 12px; padding: 28px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); }
+.tk-step { font: 500 12px var(--mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.tk-panel h3 { font: 400 clamp(28px, 3.2vw, 40px)/1.05 var(--serif); }
+.tk-desc { color: var(--ink-2); }
+.tk-chips li { animation: chip-in .35s ease-out backwards; animation-delay: calc(var(--i, 0) * 45ms); }
+@keyframes chip-in { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: none; } }
+.tk-panel.swap h3, .tk-panel.swap .tk-desc { animation: chip-in .35s ease-out; }
+.tk-bar { height: 3px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin-top: auto; }
+.tk-bar span { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+.tk-bar span.run { animation: tkbar 3.6s linear forwards; }
+@keyframes tkbar { to { transform: scaleX(1); } }
+.tk-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tk-tab { border: 1px solid var(--line); background: transparent; color: var(--ink-2); padding: 6px 10px; border-radius: 999px; font: 500 12px var(--sans); cursor: pointer; transition: background-color .15s ease-out, color .15s ease-out, border-color .15s ease-out; }
+.tk-tab:hover { border-color: var(--ink-3); color: var(--ink); }
+.tk-tab.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.logic { margin: 14px 0 0; padding: 20px 20px 10px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); }
+.logic figcaption { display: flex; align-items: center; gap: 8px; font: 500 12px var(--mono); color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+.logic figcaption .ic { color: var(--accent); }
+.logic-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.logic-scroll svg { display: block; width: 100%; min-width: 760px; height: auto; }
+.lg-edges path { fill: none; stroke: var(--ink-3); stroke-width: 2; }
+.lg-edges .lg-no { stroke: #e8590c; stroke-dasharray: 6 5; animation: dash 1.2s linear infinite; }
+.lg-edges .lg-mis { stroke: var(--line); stroke-dasharray: 3 5; }
+.lg-arrowhead { fill: var(--ink-3); }
+.lg-node rect, .lg-node path { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.5; }
+.lg-node text { font: 600 13px var(--sans); fill: var(--ink); text-anchor: middle; }
+.lg-node .lg-sub { font: 500 10.5px var(--mono); fill: var(--ink-3); }
+.lg-sys rect { fill: var(--accent-soft); stroke: var(--accent); }
+.lg-dec path { fill: color-mix(in srgb, #2e6bd9 12%, var(--surface)); stroke: #2e6bd9; }
+.lg-end rect { fill: color-mix(in srgb, var(--good) 14%, var(--surface)); stroke: var(--good); }
+.lg-warn rect { fill: color-mix(in srgb, #e8590c 10%, var(--surface)); stroke: #e8590c; stroke-dasharray: 5 4; }
+.lg-mis-box rect { fill: transparent; stroke-dasharray: 4 5; }
+.lg-mis-box text { font: 500 12px var(--mono); fill: var(--ink-2); }
+.lg-yes { font: 600 11px var(--mono); fill: var(--good); text-anchor: middle; }
+.lg-nolbl { font: 600 11px var(--mono); fill: #e8590c; }
+.lg-node { animation: lg-lit 6s ease-in-out infinite; animation-delay: calc(var(--n) * .55s); }
+@keyframes lg-lit { 0%, 14%, 100% { filter: none; } 5%, 9% { filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 55%, transparent)); } }
+.lg-token { fill: var(--accent); filter: drop-shadow(0 0 6px var(--accent)); }
+.lg-token-a { offset-path: path("M80 128 L927 128"); animation: lg-run 6s cubic-bezier(.45,0,.55,1) infinite; }
+.lg-token-b { fill: #e8590c; offset-path: path("M420 128 L420 255 L255 255 L255 128"); animation: lg-run-b 6s ease-in-out 2s infinite; opacity: 0; }
+@keyframes lg-run { 0% { offset-distance: 0%; opacity: 0; } 5% { opacity: 1; } 92% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes lg-run-b { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 45% { offset-distance: 100%; opacity: 1; } 52%, 100% { offset-distance: 100%; opacity: 0; } }
+/* Logic chart, phone version: vertical flow */
+.logic-v { display: none; }
+@media (max-width: 640px) {
+  .logic-scroll { display: none; }
+  .logic-v { display: flex; flex-direction: column; align-items: stretch; gap: 22px; margin: 6px 0 10px; }
+  .lv { position: relative; display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border-radius: 12px; background: var(--surface-2); border: 1.5px solid var(--line); animation: lg-lit 6s ease-in-out infinite; }
+  .lv:nth-child(2) { animation-delay: .6s; } .lv:nth-child(3) { animation-delay: 1.2s; } .lv:nth-child(4) { animation-delay: 1.8s; } .lv:nth-child(5) { animation-delay: 2.4s; } .lv:nth-child(6) { animation-delay: 3s; }
+  .lv b { font: 600 14px var(--sans); }
+  .lv small { font: 500 11px var(--mono); color: var(--ink-3); }
+  .lv:not(:last-child):not(.lv-mis)::after { content: ""; position: absolute; left: 50%; bottom: -21px; width: 2px; height: 18px; margin-left: -1px; background: repeating-linear-gradient(180deg, var(--accent) 0 4px, transparent 4px 8px); background-size: 2px 16px; animation: vflow .8s linear infinite; }
+  @keyframes vflow { to { background-position: 0 16px; } }
+  .lv-sys { background: var(--accent-soft); border-color: var(--accent); }
+  .lv-dec { border-color: #2e6bd9; background: color-mix(in srgb, #2e6bd9 10%, var(--surface)); }
+  .lv-no { font: 500 11.5px var(--mono); font-style: normal; color: #e8590c; }
+  .lv-end { border-color: var(--good); background: color-mix(in srgb, var(--good) 12%, var(--surface)); }
+  .lv-mis { background: transparent; border-style: dashed; text-align: center; animation: none; }
+}

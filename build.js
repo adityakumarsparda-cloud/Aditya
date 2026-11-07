@@ -16,7 +16,7 @@
     '#work .section-head', '#work .case-text', '#work .case-visual',
     '#startup .section-head', '#startup .store', '#startup .tile',
     '#experience .section-head', '#experience .timeline > li:not(.rail)',
-    '#skills .section-head', '#skills .skill-group',
+    '#skills .section-head', '#skills .tk-hub', '#skills .tk-panel', '#skills .logic',
     '#beyond .section-head', '#beyond .pipeline', '#beyond .beyond-card', '#beyond .proof',
     '#education .kicker', '#education .edu li', '#education .paper',
     '#contact .kicker', '#contact h2', '#contact .lede', '#contact .cta', '#contact .small-link',
