@@ -212,13 +212,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .reveal { opacity: 0; transform: translateY(12px); transition: opacity .4s ease-out, transform .4s ease-out; }
 .reveal.in { opacity: 1; transform: none; }
 
-@media (prefers-reduced-motion: reduce) {
-  .c-draw { stroke-dashoffset: 0; } .c-node, .c-node-glow { opacity: 1; } .c-pulse, #particles { display: none; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
-  .bar { height: var(--h); }
-  .runner.slow { width: 100%; } .runner.fast { width: max(0.35%, 4px); }
-}
+
 
 /* ───────── Graphics & animation layer ───────── */
 
@@ -322,11 +316,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .timeline > li:not(.rail)::before { content: ""; position: absolute; left: 0; top: 38px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); transition: border-color .3s ease-out, background-color .3s ease-out, box-shadow .3s ease-out; }
 .timeline > li.lit::before { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
 
-@media (prefers-reduced-motion: reduce) {
-  .w { opacity: 1; transform: none; }
-  .truck, .parcel-a, .parcel-b, .check, .speed, .route-dot { animation: none !important; }
-  .parcel-a { opacity: 0; } .parcel-b, .check { opacity: 1; } .truck { transform: translateX(70px); } .speed, .route-dot { display: none; }
-}
+
 /* On wide screens the illustration owns the right side; keep VibeKit's particles + lower-left circuit there */
 @media (min-width: 961px) { .circuits > g:nth-of-type(1), .circuits > g:nth-of-type(2), .c-pulse { display: none; } }
 
@@ -354,7 +344,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .loc-grid span { aspect-ratio: 1; display: grid; place-items: center; border-radius: 12px; background: color-mix(in srgb, var(--bg) 8%, transparent); border: 1px solid color-mix(in srgb, var(--bg) 14%, transparent); }
 .loc-grid svg { width: 55%; height: 55%; fill: none; stroke: color-mix(in srgb, var(--bg) 45%, transparent); stroke-width: 1.8; stroke-linejoin: round; animation: loc 6s ease-in-out infinite; animation-delay: calc(var(--i) * 0.25s); }
 @keyframes loc { 0%, 100% { stroke: color-mix(in srgb, var(--bg) 45%, transparent); transform: none; } 8%, 40% { stroke: var(--accent); transform: translateY(-2px); } 55% { stroke: color-mix(in srgb, var(--bg) 45%, transparent); transform: none; } }
-@media (prefers-reduced-motion: reduce) { .loc-grid svg { stroke: var(--accent); } }
+
 
 /* WhatsApp: "Connect me now" */
 :root { --wa: #25d366; --wa-dark: #128c4b; }
@@ -379,4 +369,54 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 @keyframes wa-in { from { opacity: 0; transform: translateY(20px) scale(.9); } to { opacity: 1; transform: none; } }
 @keyframes wa-ring { 0% { transform: scale(1); opacity: .8; } 70%, 100% { transform: scale(1.25, 1.6); opacity: 0; } }
 @media (max-width: 520px) { .wa-float { right: 16px; bottom: 16px; padding: 12px 16px 12px 14px; font-size: 14px; } }
-@media (prefers-reduced-motion: reduce) { .wa-float::before { display: none; } }
+
+
+/* ───────── Icons & graphics on every section ───────── */
+.kicker { display: inline-flex; align-items: center; gap: 8px; }
+.kicker .ic { width: 26px; height: 26px; padding: 5px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); stroke-width: 2; }
+.btn .ic { width: 17px; height: 17px; }
+.small-link { display: inline-flex; align-items: center; gap: 7px; margin-top: 16px; font-size: 14px; color: var(--ink-2); text-decoration: none; border-bottom: 1px solid transparent; transition: color .15s ease-out, border-color .15s ease-out; }
+.small-link .ic { width: 15px; height: 15px; }
+.small-link:hover { color: var(--ink); border-bottom-color: var(--ink-3); }
+.contact .small-link { display: flex; width: max-content; }
+.h3-ic { width: 30px; height: 30px; padding: 6px; margin-right: 10px; vertical-align: -6px; border-radius: 9px; background: var(--accent-soft); fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.case-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.case-meta .badge-now, .case-meta .badge-before { padding: 4px 9px; font-size: 10.5px; }
+.org { display: flex; align-items: center; gap: 8px; }
+.org-ic { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.edu li { display: grid; grid-template-columns: 44px 1fr; column-gap: 12px; align-items: start; }
+.edu li p { grid-column: 2; }
+.edu-ic { grid-row: span 2; width: 44px; height: 44px; padding: 10px; border-radius: 12px; background: var(--accent-soft); fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.meta-ic { width: 15px; height: 15px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Impact: automatic documentation tile */
+.tile-auto { flex-direction: column; align-items: stretch; gap: 14px; background: linear-gradient(120deg, var(--accent-soft), var(--surface) 55%); }
+.docflow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.df-src, .df-engine, .df-doc { display: inline-flex; align-items: center; gap: 7px; padding: 9px 13px; border-radius: 12px; font-size: 13.5px; font-weight: 500; background: var(--surface); border: 1px solid var(--line); }
+.df-src .ic, .df-doc .ic { width: 16px; height: 16px; color: var(--accent); }
+.df-engine { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.df-engine .ic { width: 16px; height: 16px; color: var(--accent); animation: zap 1.6s ease-in-out infinite; }
+@keyframes zap { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+.df-arrow { position: relative; width: 44px; height: 2px; background: var(--line); overflow: hidden; border-radius: 2px; }
+.df-arrow::after { content: ""; position: absolute; inset: 0; width: 40%; background: var(--accent); animation: flow 1.4s linear infinite; }
+@keyframes flow { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+.df-docs { display: inline-flex; flex-wrap: wrap; gap: 8px; }
+.df-doc { animation: doc-pop 4.5s ease-out infinite; animation-delay: calc(var(--d) * .45s); }
+@keyframes doc-pop { 0%, 8% { opacity: .25; transform: translateY(6px); } 18%, 80% { opacity: 1; transform: none; border-color: var(--accent); } 95%, 100% { opacity: .25; transform: none; } }
+@media (max-width: 640px) { .df-arrow { width: 24px; } }
+
+/* Issues handled: document generator animation */
+.docgen { width: 100%; height: auto; }
+.docgen rect { fill: var(--surface-2); stroke: var(--line); }
+.docgen text { font: 500 11px var(--mono); fill: var(--ink-2); text-anchor: middle; }
+.dg-engine rect { fill: var(--ink); stroke: var(--ink); }
+.dg-engine text { fill: var(--bg); }
+.dg-bolt { fill: var(--accent); animation: zap 1.6s ease-in-out infinite; }
+.dg-line { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 5; animation: dash 1.2s linear infinite; }
+.dg-order rect { fill: var(--accent-soft); stroke: var(--accent); animation: bob 3s ease-in-out infinite; }
+.dg-doc { animation: doc-in 4.5s ease-out infinite; animation-delay: calc(var(--d) * .5s); }
+.dg-doc rect { fill: var(--surface); }
+@keyframes doc-in { 0%, 6% { opacity: 0; transform: translateX(-14px); } 16%, 82% { opacity: 1; transform: none; } 94%, 100% { opacity: 0; transform: none; } }
+.dg-tick { fill: var(--good); }
+.dg-tickm { fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tile-wide > .tile-label { white-space: nowrap; }

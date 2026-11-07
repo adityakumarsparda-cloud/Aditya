@@ -1,6 +1,7 @@
 (() => {
   const root = document.documentElement;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Animations always run (site owner's choice), even when the device asks to reduce motion.
+  const reduce = false;
 
   // Theme toggle (remembered per browser)
   try { const t = localStorage.getItem('theme'); if (t) root.dataset.theme = t; } catch (e) {}
@@ -33,7 +34,7 @@
   };
 
   // Reveal + animate on view
-  const targets = document.querySelectorAll('.section-head, .tile, .case, .lab, .timeline > li, .skill-group, .edu li, .paper, .contact h2');
+  const targets = document.querySelectorAll('.section-head, .tile, .case, .timeline > li:not(.rail), .skill-group, .edu li, .paper, .contact h2');
   targets.forEach(el => el.classList.add('reveal'));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
@@ -51,28 +52,7 @@
     document.querySelectorAll('.reveal, [data-animate]').forEach(el => el.classList.add('in'));
   }
 
-  // Reorder point calculator
-  const Z = [[1.2816, '90%'], [1.6449, '95%'], [2.0537, '98%'], [2.3263, '99%']];
   const $ = (id) => document.getElementById(id);
-  const calc = () => {
-    const d = +$('d').value, L = +$('l').value, s = +$('s').value, [z, zl] = Z[+$('z').value];
-    $('o-d').textContent = d; $('o-l').textContent = L; $('o-s').textContent = s; $('o-z').textContent = zl;
-    const ltd = d * L, ss = Math.ceil(z * s * Math.sqrt(L)), rop = ltd + ss;
-    $('r-ltd').textContent = ltd.toLocaleString('en-IN');
-    $('r-ss').textContent = ss.toLocaleString('en-IN');
-    $('r-rop').textContent = rop.toLocaleString('en-IN');
-    $('g-ltd').style.width = (ltd / rop * 100) + '%';
-    $('g-ss').style.width = (ss / rop * 100) + '%';
-  };
-  ['d', 'l', 's', 'z'].forEach(id => $(id).addEventListener('input', calc)); calc();
-
-  // Copy email
-  const btn = $('copyEmail');
-  btn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText('adityakumar.sparda@gmail.com'); btn.textContent = 'Copied ✓'; }
-    catch (e) { btn.textContent = 'adityakumar.sparda@gmail.com'; }
-    setTimeout(() => (btn.textContent = 'Copy email'), 2000);
-  });
 
   // Particle constellation with cursor parallax, adapted from VibeKit (MIT)
   const cv = document.getElementById('particles');
@@ -152,7 +132,7 @@
   addEventListener('scroll', onScrollFx, { passive: true }); addEventListener('resize', onScrollFx); onScrollFx();
 
   // Cursor glow on cards
-  document.querySelectorAll('.tile, .skill-group, .case-visual, .lab-out, .paper').forEach(el => {
+  document.querySelectorAll('.tile, .skill-group, .case-visual, .paper').forEach(el => {
     el.addEventListener('pointermove', (e) => {
       const r = el.getBoundingClientRect();
       el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
