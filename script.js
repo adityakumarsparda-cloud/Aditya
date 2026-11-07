@@ -117,5 +117,48 @@
     raf = requestAnimationFrame(draw);
   }
 
+  // Headline: staggered word reveal (keeps <em> intact)
+  const h1 = document.querySelector('.hero h1');
+  if (h1 && !reduce) {
+    let i = 0;
+    const wrap = (node) => { const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', i++); return s; };
+    [...h1.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          const s = wrap(); s.textContent = part; frag.appendChild(s);
+        });
+        h1.replaceChild(frag, n);
+      } else { const s = wrap(); h1.replaceChild(s, n); s.appendChild(n); }
+    });
+  }
+
+  // Scroll progress + timeline rail
+  const bar = document.getElementById('progress');
+  const rail = document.getElementById('railFill');
+  const items = [...document.querySelectorAll('.timeline > li:not(.rail)')];
+  const onScrollFx = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+    if (rail) {
+      const r = rail.parentElement.getBoundingClientRect();
+      const p = Math.min(Math.max((innerHeight * 0.6 - r.top) / r.height, 0), 1);
+      rail.style.setProperty('--p', p.toFixed(3));
+      items.forEach(li => li.classList.toggle('lit', li.getBoundingClientRect().top + 45 < innerHeight * 0.6));
+    }
+  };
+  addEventListener('scroll', onScrollFx, { passive: true }); addEventListener('resize', onScrollFx); onScrollFx();
+
+  // Cursor glow on cards
+  document.querySelectorAll('.tile, .skill-group, .case-visual, .lab-out, .paper').forEach(el => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
   $('yr').textContent = new Date().getFullYear();
 })();

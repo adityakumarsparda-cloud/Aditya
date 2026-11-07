@@ -17,6 +17,7 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
 
   <header class="nav">
     <div class="wrap nav-inner">
@@ -63,6 +64,8 @@
           <circle r="2.5" fill="var(--accent)" class="c-pulse c-pulse-b"/>
         </svg>
       </div>
+      <div class="hero-grid">
+      <div class="hero-copy">
       <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> Open to new roles · Chandigarh, open to relocate</p>
       <h1>I keep products <em>moving</em> — from shelf to doorstep, on time.</h1>
       <p class="lede">I'm <strong>Aditya Kumar</strong>, an Operations &amp; Inventory Manager with 4+ years across healthcare, D2C e‑commerce and marketplaces. I build the systems that make stock accurate, dispatch fast and growth possible.</p>
@@ -70,6 +73,63 @@
         <a class="btn primary" href="Aditya_Kumar_CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a>
         <a class="btn" href="mailto:adityakumar.sparda@gmail.com">Email me</a>
         <a class="btn ghost" href="https://linkedin.com/in/xadityak" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      </div>
+
+      <figure class="hero-art" aria-label="Illustration: a parcel leaves the warehouse by truck and is delivered to a doorstep">
+        <svg viewBox="0 0 440 400" role="img" aria-hidden="true">
+          <defs>
+            <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="var(--line)"/></pattern>
+            <clipPath id="shelfclip"><rect x="34" y="196" width="102" height="100"/></clipPath>
+          </defs>
+          <rect x="0" y="0" width="440" height="400" rx="28" fill="url(#dots)"/>
+          <!-- tracking route -->
+          <path id="route" class="route" d="M 90 150 C 160 40, 300 40, 372 182"/>
+          <circle r="5" class="route-dot"/>
+          <g class="pin"><path d="M372 150c-9 0-15 7-15 15 0 11 15 24 15 24s15-13 15-24c0-8-6-15-15-15z" class="pin-shape"/><circle cx="372" cy="165" r="5" class="pin-hole"/></g>
+          <!-- ground -->
+          <line x1="16" y1="320" x2="424" y2="320" class="ground"/>
+          <line x1="150" y1="336" x2="330" y2="336" class="road"/>
+          <!-- warehouse -->
+          <g class="warehouse">
+            <path d="M20 320 V180 L85 140 L150 180 V320 Z" class="wh-body"/>
+            <path d="M14 184 L85 136 L156 184" class="wh-roof"/>
+            <rect x="34" y="196" width="102" height="100" rx="4" class="wh-inner"/>
+            <g class="shelves">
+              <line x1="34" y1="230" x2="136" y2="230"/><line x1="34" y1="264" x2="136" y2="264"/>
+              <rect x="40" y="208" width="18" height="22" rx="2"/><rect x="62" y="214" width="14" height="16" rx="2"/><rect x="80" y="206" width="22" height="24" rx="2" class="hl"/><rect x="108" y="212" width="20" height="18" rx="2"/>
+              <rect x="40" y="244" width="22" height="20" rx="2" class="hl"/><rect x="66" y="240" width="16" height="24" rx="2"/><rect x="88" y="246" width="18" height="18" rx="2"/><rect x="110" y="242" width="20" height="22" rx="2"/>
+              <rect x="44" y="276" width="20" height="20" rx="2"/><rect x="70" y="280" width="16" height="16" rx="2"/><rect x="94" y="274" width="24" height="22" rx="2" class="hl"/>
+            </g>
+            <rect x="34" y="196" width="102" height="3" class="scan" clip-path="url(#shelfclip)"/>
+            <rect x="58" y="300" width="54" height="20" class="wh-door"/>
+          </g>
+          <!-- parcel leaving dock -->
+          <g class="parcel parcel-a"><rect x="118" y="302" width="18" height="16" rx="2"/><line x1="127" y1="302" x2="127" y2="318"/></g>
+          <!-- house -->
+          <g class="house">
+            <path d="M326 320 V250 L372 214 L418 250 V320 Z" class="hs-body"/>
+            <path d="M318 254 L372 210 L426 254" class="hs-roof"/>
+            <rect x="360" y="280" width="24" height="40" rx="3" class="hs-door"/>
+            <rect x="336" y="262" width="16" height="14" rx="2" class="hs-win"/><rect x="392" y="262" width="16" height="14" rx="2" class="hs-win"/>
+          </g>
+          <g class="parcel parcel-b"><rect x="334" y="304" width="18" height="16" rx="2"/><line x1="343" y1="304" x2="343" y2="320"/></g>
+          <g class="check"><circle cx="404" cy="226" r="13"/><path d="M398 226 l4 4 l8 -9"/></g>
+          <!-- truck -->
+          <g class="truck">
+            <rect x="150" y="282" width="62" height="38" rx="4" class="tr-box"/>
+            <path d="M212 294 h20 l12 14 v12 h-32 z" class="tr-cab"/>
+            <path d="M218 298 h12 l7 9 h-19 z" class="tr-win"/>
+            <text x="181" y="306" class="tr-label">AK</text>
+            <circle cx="168" cy="322" r="7" class="tr-wheel"/><circle cx="228" cy="322" r="7" class="tr-wheel"/>
+            <g class="speed"><line x1="128" y1="292" x2="142" y2="292"/><line x1="120" y1="302" x2="142" y2="302"/><line x1="132" y1="312" x2="142" y2="312"/></g>
+          </g>
+          <!-- floating stat chips (real numbers from CV) -->
+          <g class="chip chip-1"><rect x="196" y="96" width="132" height="36" rx="18"/><circle cx="216" cy="114" r="5" class="chip-dot"/><text x="228" y="119">98%+ on time</text></g>
+          <g class="chip chip-2"><rect x="24" y="64" width="118" height="36" rx="18"/><text x="40" y="87">48h → 10 min</text></g>
+          <g class="chip chip-3"><rect x="300" y="352" width="122" height="32" rx="16"/><text x="316" y="373">₹50L → ₹4.3Cr</text></g>
+        </svg>
+      </figure>
       </div>
 
       <div class="ticker" aria-label="Tools I work with">
@@ -88,32 +148,32 @@
       </div>
       <div class="bento">
         <article class="tile tile-xl">
-          <p class="tile-label">Quick-commerce revenue · Sova Health</p>
+          <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Quick-commerce revenue · Sova Health</p>
           <p class="big"><span>₹50L</span><span class="arrow">→</span><span class="accent" data-count="4.3" data-prefix="₹" data-suffix="Cr" data-decimals="1">₹4.3Cr</span></p>
           <p class="tile-note">~8.6× in 8 months across Blinkit, Zepto &amp; Swiggy Instamart</p>
         </article>
         <article class="tile">
-          <p class="tile-label">Order processing</p>
+          <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Order processing</p>
           <p class="big"><span>48h</span><span class="arrow">→</span><span class="accent">10m</span></p>
           <p class="tile-note">via an automation I built</p>
         </article>
         <article class="tile">
-          <p class="tile-label">On-time dispatch SLA</p>
+          <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>On-time dispatch SLA</p>
           <p class="big accent" data-count="98" data-suffix="%+">98%+</p>
           <p class="tile-note">PAN-India diagnostic kits</p>
         </article>
         <article class="tile">
-          <p class="tile-label">Client accounts managed</p>
+          <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.2.6 3.5 2.6 3.5 6"/></svg>Client accounts managed</p>
           <p class="big" data-count="1600" data-suffix="+">1,600+</p>
           <p class="tile-note">end-to-end, with dispatch</p>
         </article>
         <article class="tile">
-          <p class="tile-label">CSAT sustained</p>
+          <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 14.5c1 1.3 2.4 2 4 2s3-.7 4-2"/><path d="M9 9.5h.01M15 9.5h.01"/></svg>CSAT sustained</p>
           <p class="big" data-count="95" data-suffix="%+">95%+</p>
           <p class="tile-note">Zoho CRM workflows &amp; escalations</p>
         </article>
         <article class="tile tile-wide">
-          <p class="tile-label">Dispatch window</p>
+          <p class="tile-label"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9"/></svg>Dispatch window</p>
           <p class="big">24–48h</p>
           <p class="tile-note">web, sales &amp; B2B orders · GLEUHR</p>
         </article>
@@ -235,6 +295,7 @@
         <h2>Where I've done it</h2>
       </div>
       <ol class="timeline">
+        <li class="rail" aria-hidden="true"><span id="railFill"></span></li>
         <li>
           <p class="when">May 2026 — Present</p>
           <div>
@@ -285,11 +346,11 @@
         <h2>What I bring</h2>
       </div>
       <div class="skills">
-        <div class="skill-group"><h3>Supply chain &amp; logistics</h3><ul class="chips"><li>Inventory management</li><li>Demand forecasting</li><li>Shiprocket dispatch</li><li>DHL international</li><li>Customs documentation</li><li>SLA / TAT management</li><li>Quick commerce</li><li>D2C operations</li><li>Warehouse reconciliation</li><li>Reorder point planning</li><li>Cycle counting</li></ul></div>
-        <div class="skill-group"><h3>Systems &amp; CRM</h3><ul class="chips"><li>Zoho CRM admin</li><li>Zoconut</li><li>Shopify</li><li>Unicommerce</li><li>HubSpot</li><li>Oracle</li></ul></div>
-        <div class="skill-group"><h3>Data &amp; reporting</h3><ul class="chips"><li>Power BI</li><li>MIS dashboards</li><li>Advanced Excel</li><li>Inventory reconciliation</li></ul></div>
-        <div class="skill-group"><h3>Automation &amp; design</h3><ul class="chips"><li>AI-assisted workflow automation</li><li>SOP development</li><li>Process optimization</li><li>Figma prototyping</li></ul></div>
-        <div class="skill-group"><h3>Leadership</h3><ul class="chips"><li>Team management</li><li>Task allocation</li><li>Vendor coordination</li><li>Escalation management</li></ul></div>
+        <div class="skill-group"><h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l9-5 9 5-9 5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>Supply chain &amp; logistics</h3><ul class="chips"><li>Inventory management</li><li>Demand forecasting</li><li>Shiprocket dispatch</li><li>DHL international</li><li>Customs documentation</li><li>SLA / TAT management</li><li>Quick commerce</li><li>D2C operations</li><li>Warehouse reconciliation</li><li>Reorder point planning</li><li>Cycle counting</li></ul></div>
+        <div class="skill-group"><h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>Systems &amp; CRM</h3><ul class="chips"><li>Zoho CRM admin</li><li>Zoconut</li><li>Shopify</li><li>Unicommerce</li><li>HubSpot</li><li>Oracle</li></ul></div>
+        <div class="skill-group"><h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Data &amp; reporting</h3><ul class="chips"><li>Power BI</li><li>MIS dashboards</li><li>Advanced Excel</li><li>Inventory reconciliation</li></ul></div>
+        <div class="skill-group"><h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Automation &amp; design</h3><ul class="chips"><li>AI-assisted workflow automation</li><li>SOP development</li><li>Process optimization</li><li>Figma prototyping</li></ul></div>
+        <div class="skill-group"><h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Leadership</h3><ul class="chips"><li>Team management</li><li>Task allocation</li><li>Vendor coordination</li><li>Escalation management</li></ul></div>
       </div>
     </section>
 
