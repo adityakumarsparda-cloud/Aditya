@@ -174,6 +174,45 @@
   const tkData = document.getElementById('tkData');
   if (tkData) {
     const areas = JSON.parse(tkData.textContent);
+    // one icon per skill
+    const P = {
+      box: '<path d="M3 8l9-5 9 5-9 5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+      trend: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+      cycle: '<path d="M20 11a8 8 0 0 0-14.9-3M4 13a8 8 0 0 0 14.9 3"/><path d="M5 3v5h5M19 21v-5h-5"/>',
+      truck: '<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
+      globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+      clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+      bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+      bag: '<path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+      stack: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+      heart: '<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+      cart: '<circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h11l2-8H6.2"/>',
+      grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+      server: '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+      chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+      audit: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2"/><path d="M9 13l2 2 4-4"/>',
+      table: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>',
+      spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+      doc: '<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M9 13h8M9 17h6"/>',
+      list: '<path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>',
+      cog: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+      users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.2.6 3.5 2.6 3.5 6"/>',
+      tasks: '<path d="M4 6l2 2 3-3M4 13l2 2 3-3M12 7h8M12 14h8M12 20h8"/>',
+      hands: '<path d="M2 12l4-4 4 2 4-3 4 2 4 3"/><path d="M6 8v6l4 4 2-2 2 2 4-4v-6"/>',
+      alert: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/>',
+      home: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>',
+      chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/>',
+      smile: '<circle cx="12" cy="12" r="9"/><path d="M8 14.5c1 1.3 2.4 2 4 2s3-.7 4-2"/><path d="M9 9.5h.01M15 9.5h.01"/>',
+    };
+    const MAP = [
+      [/inventory management|warehouse|reconciliation/i, 'box'], [/forecast/i, 'trend'], [/reorder/i, 'cycle'],
+      [/shiprocket/i, 'truck'], [/dhl|international/i, 'globe'], [/sla|tat/i, 'clock'], [/quick commerce/i, 'bolt'],
+      [/d2c/i, 'bag'], [/zoho inventory/i, 'stack'], [/zoconut/i, 'heart'], [/shopify/i, 'cart'], [/unicommerce/i, 'grid'],
+      [/oracle/i, 'server'], [/mis/i, 'chart'], [/audit/i, 'audit'], [/excel/i, 'table'], [/documentation/i, 'doc'], [/ai-assisted|automation/i, 'spark'],
+      [/sop/i, 'list'], [/process/i, 'cog'], [/team/i, 'users'], [/task/i, 'tasks'],
+      [/vendor/i, 'hands'], [/escalation/i, 'alert'], [/last-mile|delivery/i, 'home'], [/follow/i, 'chat'], [/csat/i, 'smile'],
+    ];
+    const skillIcon = (name) => { const hit = MAP.find(([re]) => re.test(name)); return P[hit ? hit[1] : 'spark']; };
     const nodes = [...document.querySelectorAll('.tk-node')], spokes = [...document.querySelectorAll('.tk-spoke')], tabs = [...document.querySelectorAll('.tk-tab')];
     const panel = document.querySelector('.tk-panel'), bar = document.getElementById('tkBar'), runner = document.querySelector('.tk-runner');
     let cur = 0, timer = 0, paused = false, visible = false;
@@ -185,7 +224,7 @@
       document.getElementById('tkNum').textContent = String(k + 1).padStart(2, '0');
       document.getElementById('tkTitle').innerHTML = a.title;
       document.getElementById('tkDesc').textContent = a.desc;
-      document.getElementById('tkChips').innerHTML = a.chips.map((c, i) => `<li style="--i:${i}">${c}</li>`).join('');
+      document.getElementById('tkChips').innerHTML = a.chips.map((c, i) => `<li style="--i:${i}"><span class="sk-ic"><svg viewBox="0 0 24 24" aria-hidden="true">${skillIcon(c)}</svg></span>${c}</li>`).join('');
       panel.classList.remove('swap'); void panel.offsetWidth; panel.classList.add('swap');
       const sp = spokes[k];
       runner.style.offsetPath = `path("M${sp.getAttribute('x1')} ${sp.getAttribute('y1')} L${sp.getAttribute('x2')} ${sp.getAttribute('y2')}")`;
@@ -211,6 +250,27 @@
     };
     addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
     toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  // Menu: highlight the section you're reading, with a sliding pill
+  const navEl = document.querySelector('.nav nav'), ind = document.querySelector('.nav-ind');
+  if (navEl && ind) {
+    const links = [...navEl.querySelectorAll('a[data-sec]')];
+    const secs = links.map(a => document.getElementById(a.dataset.sec));
+    let active = null;
+    const place = (a) => {
+      if (!a) { ind.style.opacity = '0'; return; }
+      ind.style.opacity = '1';
+      ind.style.width = a.offsetWidth + 'px';
+      ind.style.transform = `translateX(${a.offsetLeft}px)`;
+    };
+    const spy = () => {
+      let cur = null;
+      secs.forEach((sec, i) => { if (sec && sec.getBoundingClientRect().top < innerHeight * 0.35) cur = links[i]; });
+      if (cur !== active) { links.forEach(l => l.classList.toggle('active', l === cur)); active = cur; }
+      place(active);
+    };
+    addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy); spy();
   }
 
   $('yr').textContent = new Date().getFullYear();
