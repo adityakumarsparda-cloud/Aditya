@@ -127,9 +127,9 @@
     }
     else if (el.matches('.case-text')) {
       const h = el.querySelector('h3')?.textContent || '';
-      part = /12\+ locations/i.test(h) ? 'Stock & dispatch' : /paperwork/i.test(h) ? 'Paperwork automation' : /e-commerce/i.test(h) ? 'E-commerce growth' : /TAT/i.test(h) ? 'Dispatch TAT' : 'Issue';
+      part = /COD/.test(h) ? 'COD returns' : /international return/i.test(h) ? 'Intl. RTO' : /12\+ locations/i.test(h) ? 'Stock & dispatch' : /paperwork/i.test(h) ? 'Paperwork automation' : /e-commerce/i.test(h) ? 'E-commerce growth' : /TAT/i.test(h) ? 'Dispatch TAT' : 'Issue';
     }
-    else if (el.matches('.case-visual')) part = el.querySelector('.flow') ? 'Flow diagram' : el.querySelector('.docgen') ? 'Doc generator' : el.querySelector('.bars') ? 'Revenue chart' : el.querySelector('.race') ? 'TAT bars' : 'Visual';
+    else if (el.matches('.case-visual')) part = el.querySelector('.codflow') ? 'COD checks' : el.querySelector('.rtoflow') ? 'Recovery steps' : el.querySelector('.flow') ? 'Flow diagram' : el.querySelector('.docgen') ? 'Doc generator' : el.querySelector('.bars') ? 'Revenue chart' : el.querySelector('.race') ? 'TAT bars' : 'Visual';
     else if (el.matches('.timeline > li')) part = clean((el.querySelector('.org')?.textContent || '').split('·')[0], 20);
     else if (el.matches('.store')) part = 'Store';
     else if (el.matches('.tk-hub')) part = 'Skill map';
@@ -222,7 +222,7 @@
 
   /* ---------- 2) Full tour ---------- */
   // Tuned so the full tour lasts about 35 seconds on laptops and on phones (phones have a longer page).
-  const tourSpeed = () => { const k = innerWidth < 700 ? 0.6 : 0.9; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true, textK: innerWidth < 700 ? 0.58 : 0.8 }; };
+  const tourSpeed = () => { const k = innerWidth < 700 ? 0.38 : 0.74; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true, textK: innerWidth < 700 ? 0.36 : 0.64 }; };
   let touring = false, aborted = false, pill = null, tourTargets = [];
   const smoothScrollTo = (y) => {
     const max = document.documentElement.scrollHeight - innerHeight;

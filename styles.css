@@ -789,3 +789,56 @@ body.building .to-top { opacity: 0; pointer-events: none; }
 /* cursor label flips to the left of the arrow near the right edge, so it is never cut off */
 .sw-cursor { position: absolute; }
 .sw-cursor .sw-tag { position: absolute; left: 12px; top: 0; margin: 18px 0 0; }
+
+/* ───────── Hero: looking for ───────── */
+.seeking { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 22px; }
+.seek-lbl { display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin-right: 2px; }
+.seek-lbl .ic { width: 15px; height: 15px; }
+.seek-chip { padding: 8px 14px; border-radius: 999px; font: 650 14px var(--sans); color: var(--ink); background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, var(--surface)), var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.seek-loc { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; font: 500 13px var(--sans); color: var(--ink-2); border: 1px dashed var(--line); }
+.seek-loc .ic { width: 14px; height: 14px; color: var(--accent); }
+.small-links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+/* ───────── Operational wins: root cause + new flows ───────── */
+.case dt:nth-of-type(2) { color: #ffb347; }
+.badge-neutral { display: inline-flex; padding: 4px 9px; border-radius: 999px; font: 600 10.5px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; background: color-mix(in srgb, #2e6bd9 22%, var(--surface)); color: #9cc0ff; border: 1px solid color-mix(in srgb, #2e6bd9 45%, transparent); }
+.codflow, .rtoflow { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.codflow li, .rtoflow li { position: relative; display: flex; align-items: baseline; gap: 10px; padding: 11px 14px 11px 44px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); animation: flowstep 6s ease-in-out infinite; animation-delay: calc(var(--s) * .9s); }
+.codflow li::before, .rtoflow li::before { content: counter(step); counter-increment: step; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font: 600 11px var(--mono); background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); }
+.codflow, .rtoflow { counter-reset: step; }
+.codflow li:not(:last-child)::after, .rtoflow li:not(:last-child)::after { content: ""; position: absolute; left: 22px; bottom: -13px; width: 2px; height: 14px; background: repeating-linear-gradient(180deg, var(--accent) 0 3px, transparent 3px 6px); }
+.codflow b, .rtoflow b { font: 600 14px var(--sans); }
+.codflow small, .rtoflow small { font: 500 11.5px var(--mono); color: var(--ink-3); }
+.cf-ok, .rf-ok { border-color: var(--good) !important; background: color-mix(in srgb, var(--good) 12%, var(--surface)) !important; }
+.cf-ok::before, .rf-ok::before { content: "✓" !important; background: var(--good) !important; color: #0b2a12 !important; border-color: var(--good) !important; }
+.rf-bad { border-color: #e8590c !important; background: color-mix(in srgb, #e8590c 12%, var(--surface)) !important; }
+.rf-bad::before { content: "!" !important; background: #e8590c !important; color: #fff !important; border-color: #e8590c !important; }
+@keyframes flowstep { 0%, 16%, 100% { box-shadow: none; transform: none; } 5%, 11% { box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 25%, transparent); transform: translateX(4px); } }
+
+/* ───────── Education note, card link, Glass.skin journey ───────── */
+.overlap-note { display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; padding: 14px 16px; border-radius: 12px; border: 1px dashed var(--line); color: var(--ink-2); font-size: 14px; }
+.overlap-note .ic { flex: none; width: 18px; height: 18px; color: var(--accent); margin-top: 2px; }
+.card-link { margin-top: 6px; font: 600 14px var(--sans); color: var(--accent); text-decoration: none; }
+.card-link:hover { text-decoration: underline; }
+.gs-journey { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.gs-journey li { position: relative; display: flex; flex-direction: column; gap: 3px; padding: 12px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); min-width: 170px; }
+.gs-journey li:not(:last-child)::after { content: "→"; position: absolute; right: -10px; top: 50%; transform: translate(50%, -50%); color: var(--accent); font-weight: 700; z-index: 1; }
+.gs-journey li .ic { width: 16px; height: 16px; color: var(--good); position: absolute; right: 10px; top: 10px; }
+.gs-journey b { font: 600 14px var(--sans); }
+.gs-journey small { font: 500 11.5px var(--mono); color: var(--ink-3); }
+.gs-journey .gs-now { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--surface)); }
+.gs-journey .gs-now b { color: var(--accent); }
+@media (max-width: 640px) { .gs-journey { flex-direction: column; } .gs-journey li:not(:last-child)::after { content: "↓"; right: 50%; top: auto; bottom: -12px; transform: translateX(50%); } }
+/* keep the hero buttons above the fold on laptops now that "Looking for" is there */
+.hero { padding-top: 64px; }
+.hero h1 { margin: 22px 0 22px; }
+.seeking { margin-top: 18px; }
+.hero .cta { margin-top: 22px; }
+@media (min-width: 961px) {
+  .hero-grid { grid-template-columns: 1.4fr 1fr; gap: 24px; }
+  .hero-copy h1 { font-size: clamp(48px, 5.4vw, 80px); max-width: 15ch; }
+  .hero .lede { font-size: 17px; line-height: 1.55; }
+  .hero { padding-top: 48px; }
+}
+@media (min-width: 961px) { .hero { padding-top: 36px; } .hero h1 { margin: 18px 0 18px; } }
+.wa-float.hide { visibility: hidden; transition: opacity .3s ease-out, visibility 0s linear .3s; }
