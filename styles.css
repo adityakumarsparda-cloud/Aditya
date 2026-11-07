@@ -329,3 +329,29 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 }
 /* On wide screens the illustration owns the right side; keep VibeKit's particles + lower-left circuit there */
 @media (min-width: 961px) { .circuits > g:nth-of-type(1), .circuits > g:nth-of-type(2), .c-pulse { display: none; } }
+
+/* Impact groups: Now (GLEUHR) / Before (Sova) */
+.impact-group + .impact-group { margin-top: 56px; }
+.group-label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font: 500 13px/1.4 var(--mono); color: var(--ink-2); margin-bottom: 16px; }
+.badge-now, .badge-before { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font: 600 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+.badge-now { background: var(--accent); color: #fff; }
+.badge-now .pulse { background: #fff; }
+.badge-before { background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line); }
+.tile-span2 { grid-column: span 2; }
+.big-sub { font: 400 clamp(20px, 2.2vw, 28px)/1.1 var(--serif); color: color-mix(in srgb, var(--bg) 75%, transparent); letter-spacing: 0; align-self: flex-end; padding-bottom: .4em; }
+.mid-big { font-size: clamp(30px, 3vw, 40px); }
+.cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 6px 0 4px; }
+.cats li { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 6px; border-radius: 14px; background: var(--surface-2); font-size: 13px; font-weight: 500; text-align: center; transition: transform .15s ease-out, background-color .15s ease-out; }
+.cats li:hover { transform: translateY(-3px); background: var(--accent-soft); }
+.cat-ic { width: 30px; height: 30px; fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.stack { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-left: auto; color: var(--ink-2); font-size: 15px; }
+.stack strong { color: var(--ink); font-weight: 600; }
+.tile-wide .stack { justify-content: flex-end; }
+@media (max-width: 900px) { .tile-span2 { grid-column: span 2; } }
+@media (max-width: 520px) { .tile-span2 { grid-column: auto; } .cats { grid-template-columns: repeat(2, 1fr); } .tile-wide .stack { justify-content: flex-start; margin-left: 0; } }
+/* 12 client-location pins lighting up in sequence */
+.loc-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin: 18px 0 8px; max-width: 420px; }
+.loc-grid span { aspect-ratio: 1; display: grid; place-items: center; border-radius: 12px; background: color-mix(in srgb, var(--bg) 8%, transparent); border: 1px solid color-mix(in srgb, var(--bg) 14%, transparent); }
+.loc-grid svg { width: 55%; height: 55%; fill: none; stroke: color-mix(in srgb, var(--bg) 45%, transparent); stroke-width: 1.8; stroke-linejoin: round; animation: loc 6s ease-in-out infinite; animation-delay: calc(var(--i) * 0.25s); }
+@keyframes loc { 0%, 100% { stroke: color-mix(in srgb, var(--bg) 45%, transparent); transform: none; } 8%, 40% { stroke: var(--accent); transform: translateY(-2px); } 55% { stroke: color-mix(in srgb, var(--bg) 45%, transparent); transform: none; } }
+@media (prefers-reduced-motion: reduce) { .loc-grid svg { stroke: var(--accent); } }
