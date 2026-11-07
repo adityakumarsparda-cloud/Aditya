@@ -160,5 +160,12 @@
     });
   });
 
+  // Hide the floating WhatsApp button while the contact section (which has its own) is on screen
+  const waFloat = document.querySelector('.wa-float');
+  const contact = document.getElementById('contact');
+  if (waFloat && contact && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => waFloat.classList.toggle('hide', en.isIntersecting), { threshold: 0.3 }).observe(contact);
+  }
+
   $('yr').textContent = new Date().getFullYear();
 })();
