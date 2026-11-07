@@ -147,5 +147,23 @@
     new IntersectionObserver(([en]) => waFloat.classList.toggle('hide', en.isIntersecting), { threshold: 0.3 }).observe(contact);
   }
 
+  // Startup store mock: cart count ticks up in time with the "New order" toast
+  const cart = document.getElementById('cartCount');
+  const store = document.querySelector('.store');
+  if (cart && store) {
+    let n = 0, timer = 0;
+    const add = store.querySelector('.store-add'), toast = store.querySelector('.store-toast');
+    const replay = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+    // press "Add to cart" -> cart count goes up -> "New order" toast
+    const tick = () => {
+      replay(add, 'press');
+      setTimeout(() => { n += 1; cart.textContent = n; replay(cart, 'bump'); replay(toast, 'show'); }, 260);
+    };
+    new IntersectionObserver(([en]) => {
+      clearInterval(timer);
+      if (en.isIntersecting) { setTimeout(tick, 900); timer = setInterval(tick, 2600); }
+    }).observe(store);
+  }
+
   $('yr').textContent = new Date().getFullYear();
 })();

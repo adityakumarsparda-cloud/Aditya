@@ -14,6 +14,7 @@
   const SECTIONS = [
     '#impact .section-head', '#impact .group-label', '#impact .tile',
     '#work .section-head', '#work .case-text', '#work .case-visual',
+    '#startup .section-head', '#startup .store', '#startup .tile',
     '#experience .section-head', '#experience .timeline > li:not(.rail)',
     '#skills .section-head', '#skills .skill-group',
     '#education .kicker', '#education .edu li', '#education .paper',
