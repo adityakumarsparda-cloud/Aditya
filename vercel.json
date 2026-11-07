@@ -1,9 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "aditya-tawny.vercel.app" }],
-      "destination": "https://para-aditya.vercel.app/:path*",
+      "destination": "https://para-aditya.vercel.app/$1",
       "permanent": true
     }
   ]
