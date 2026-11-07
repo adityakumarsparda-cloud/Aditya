@@ -10,7 +10,7 @@
     { name: 'Vendors',   color: '#2e6bd9' },
     { name: 'MIS',       color: '#7a4bd1' },
   ];
-  const HERO = ['.hero .eyebrow', '.hero h1', '.hero .lede', '.hero .cta', '.hero .small-link', '.hero-art'];
+  const HERO = ['.hero .eyebrow', '.hero h1', '.hero .lede', '.hero .cta', '.hero .small-link', '.hero .build-btn', '.hero-art', '.ticker'];
   const SECTIONS = [
     '#impact .section-head', '#impact .group-label', '#impact .tile',
     '#work .section-head', '#work .case-text', '#work .case-visual',
@@ -20,6 +20,7 @@
     '#education .kicker', '#education .edu li', '#education .paper',
     '#contact .kicker', '#contact h2', '#contact .lede', '#contact .cta', '#contact .small-link',
   ];
+  const FOOTER = ['footer.footer'];
 
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
   const docOrder = (a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
@@ -60,6 +61,30 @@
     c.idleTimer = setTimeout(() => c.el.classList.add('idle'), 1400);
   }
 
+  /* Every piece of text inside a block: headings, lines, list items, chips, numbers, buttons. */
+  const TEXT_SEL = 'h2,h3,p,li,dt,dd,figcaption,a.btn,button.build-btn,.store-add,.df-src,.df-engine,.df-doc,.badge-now,.badge-before,.chips li,.cats li,.stack li,.ticker-track span,.tile-label,.big,footer a';
+  function textsIn(block) {
+    const all = [block, ...block.querySelectorAll(TEXT_SEL)].filter(el =>
+      el.matches(TEXT_SEL) && !el.closest('svg') && !el.closest('.hero h1') && !el.matches('.hero h1') &&
+      el.textContent.trim() && !el.querySelector(TEXT_SEL));
+    return [...new Set(all)];
+  }
+  async function typeTexts(block, c, isAborted) {
+    const items = textsIn(block);
+    const max = 18;
+    for (let k = 0; k < items.length; k++) {
+      const t = items[k];
+      if (isAborted() || k >= max) { t.classList.add('tx-on'); continue; }
+      const n = t.textContent.trim().length;
+      const d = Math.max(120, Math.min(n * 7, 420));
+      t.style.transition = `clip-path ${d}ms steps(${Math.max(4, Math.min(n, 36))}, end)`;
+      t.classList.add('tx-on');
+      const r = t.getBoundingClientRect();
+      if (r.width) moveCursor(c, r.right + scrollX + 2, r.top + scrollY + r.height * 0.6, Math.min(d, 220));
+      await sleep(d * 0.55);
+    }
+  }
+
   /* Draw a measured box around one element with one cursor, then reveal it. */
   async function build(el, c, speed, isAborted) {
     const p = pagePos(el);
@@ -76,6 +101,7 @@
     await moveCursor(c, p.x + p.w - 6, p.y + p.h - 6, speed.draw);
     el.classList.add('built', 'in');
     if (el.matches('.hero h1')) await typeHeadline(el, c, isAborted);
+    if (speed.text) await typeTexts(el, c, isAborted);
     await sleep(speed.hold);
     box.classList.add('done');
     setTimeout(() => box.remove(), 400);
@@ -137,7 +163,7 @@
   }
 
   /* ---------- 2) Full tour ---------- */
-  const TOUR_SPEED = { move: 380, draw: 320, hold: 160 };
+  const TOUR_SPEED = { move: 340, draw: 280, hold: 120, text: true };
   let touring = false, aborted = false, pill = null, tourTargets = [];
   const smoothScrollTo = (y) => {
     const max = document.documentElement.scrollHeight - innerHeight;
@@ -151,8 +177,8 @@
     stopScrollMode();
     await smoothScrollTo(0);
 
-    tourTargets = collect([...HERO, ...SECTIONS]).filter(el => el.offsetParent !== null);
-    tourTargets.forEach(el => { el.classList.add('bt'); el.classList.remove('built'); });
+    tourTargets = collect([...HERO, ...SECTIONS, ...FOOTER]).filter(el => el.offsetParent !== null);
+    tourTargets.forEach(el => { el.classList.add('bt'); el.classList.remove('built'); textsIn(el).forEach(t => { t.classList.add('tx'); t.classList.remove('tx-on'); t.style.transition = ''; }); });
     document.body.classList.add('building');
     ensureLayer();
     cursors.forEach((c, i) => { c.el.style.transitionDuration = '0ms'; c.el.style.transform = `translate(${innerWidth / 2 + (i - 1.5) * 60}px, ${scrollY + innerHeight + 40}px)`; });
@@ -183,7 +209,8 @@
     document.querySelectorAll('.hero h1 .w').forEach(w => w.classList.add('on'));
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
     cursors.forEach(c => parkLater(c));
-    setTimeout(() => document.body.classList.remove('building'), 450);
+    document.querySelectorAll('.tx').forEach(t => t.classList.add('tx-on'));
+    setTimeout(() => { document.body.classList.remove('building'); document.querySelectorAll('.tx').forEach(t => { t.classList.remove('tx', 'tx-on'); t.style.transition = ''; }); }, 450);
 
     if (aborted) { pill.remove(); touring = false; return; }
     pill.classList.add('ok');

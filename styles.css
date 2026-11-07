@@ -522,3 +522,7 @@ body.sw-scroll .bt:not(.built) { opacity: 0 !important; transform: translateY(8p
 .startup-stats .tile:last-child { grid-column: span 2; flex-direction: row; align-items: center; justify-content: space-between; }
 .startup-stats .tile:last-child .tile-note { margin: 0; }
 @media (max-width: 520px) { .startup-stats .tile:last-child { grid-column: auto; flex-direction: column; align-items: flex-start; } }
+
+/* Tour: text is typed out piece by piece */
+body.building .tx { clip-path: inset(0 100% 0 0); }
+body.building .tx.tx-on { clip-path: inset(-4px -4px -4px -4px); }
