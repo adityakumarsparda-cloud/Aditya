@@ -3,16 +3,6 @@
   // Animations always run (site owner's choice), even when the device asks to reduce motion.
   const reduce = false;
 
-  // Theme toggle (remembered per browser)
-  try { const t = localStorage.getItem('theme'); if (t) root.dataset.theme = t; } catch (e) {}
-  document.getElementById('themeToggle').addEventListener('click', () => {
-    const dark = root.dataset.theme
-      ? root.dataset.theme === 'dark'
-      : window.matchMedia('(prefers-color-scheme: dark)').matches;
-    root.dataset.theme = dark ? 'light' : 'dark';
-    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
-  });
-
   // Nav border on scroll
   const nav = document.querySelector('.nav');
   const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);

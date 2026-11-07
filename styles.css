@@ -1,30 +1,19 @@
 :root {
-  --bg: #f6f4ef;
-  --surface: #ffffff;
-  --surface-2: #efece4;
-  --ink: #141414;
-  --ink-2: #4a4843;
+  /* Dark mode only */
+  --bg: #111110;
+  --surface: #1a1a18;
+  --surface-2: #222220;
+  --ink: #f1efe9;
+  --ink-2: #bdbab2;
   --ink-3: #85827a;
-  --line: #e2ded4;
-  --accent: #d9480f;
-  --accent-soft: #fbe3d6;
-  --good: #2b8a3e;
+  --line: #2e2d2a;
+  --accent: #ff7a3d;
+  --accent-soft: #3a2117;
+  --good: #69db7c;
   --radius: 18px;
   --serif: "Instrument Serif", Georgia, serif;
   --sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #111110; --surface: #1a1a18; --surface-2: #222220; --ink: #f1efe9; --ink-2: #bdbab2;
-    --ink-3: #85827a; --line: #2e2d2a; --accent: #ff7a3d; --accent-soft: #3a2117; --good: #69db7c;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #111110; --surface: #1a1a18; --surface-2: #222220; --ink: #f1efe9; --ink-2: #bdbab2;
-  --ink-3: #85827a; --line: #2e2d2a; --accent: #ff7a3d; --accent-soft: #3a2117; --good: #69db7c;
   color-scheme: dark;
 }
 
@@ -55,8 +44,7 @@ em { font-style: italic; color: var(--accent); }
 .nav nav { margin-left: auto; display: flex; gap: 22px; }
 .nav nav a { text-decoration: none; font-size: 14px; color: var(--ink-2); }
 .nav nav a:hover { color: var(--ink); }
-.theme-toggle { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; display: grid; place-items: center; }
-@media (max-width: 760px) { .nav nav { display: none; } .theme-toggle { margin-left: auto; } }
+@media (max-width: 760px) { .nav nav { display: none; } }
 
 /* HERO */
 .hero { padding: 96px 0 40px; position: relative; isolation: isolate; }
@@ -467,7 +455,7 @@ body.sw-scroll .bt:not(.built) { opacity: 0 !important; transform: translateY(8p
 .ops-play { fill: var(--accent); stroke: none; }
 @keyframes ops-spin { to { transform: rotate(360deg); } }
 .ops-ic { transform-origin: 50% 50%; }
-@media (max-width: 760px) { .ops-btn { margin-left: auto; } .theme-toggle { margin-left: 0; } }
+@media (max-width: 760px) { .ops-btn { margin-left: auto; } }
 @media (max-width: 380px) { .ops-btn { padding: 7px 11px 7px 8px; font-size: 12px; } }
 
 /* ───────── Startup: Shopify store ───────── */
@@ -730,9 +718,7 @@ body.building .tx.tx-on { clip-path: inset(-4px -4px -4px -4px); }
 }
 
 /* ───────── Operations wallpaper (fixed, very faint) ───────── */
-:root { --wall-ink: #6b5a4c; --wall-op: .07; --wall-glow-a: color-mix(in srgb, var(--accent) 10%, transparent); --wall-glow-b: color-mix(in srgb, #2e6bd9 6%, transparent); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --wall-ink: #f1efe9; --wall-op: .06; } }
-:root[data-theme="dark"] { --wall-ink: #f1efe9; --wall-op: .06; }
+:root { --wall-ink: #f1efe9; --wall-op: .06; --wall-glow-a: color-mix(in srgb, var(--accent) 10%, transparent); --wall-glow-b: color-mix(in srgb, #2e6bd9 6%, transparent); }
 .wallpaper { position: fixed; inset: 0; z-index: -2; pointer-events: none;
   background:
     radial-gradient(900px 600px at 100% 0%, var(--wall-glow-a), transparent 60%),
