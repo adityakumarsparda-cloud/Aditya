@@ -164,7 +164,8 @@
   }
 
   /* ---------- 2) Full tour ---------- */
-  const TOUR_SPEED = { move: 340, draw: 280, hold: 120, text: true };
+  // Tuned so the full tour lasts about 45 seconds on laptops and on phones (phones have a longer page).
+  const tourSpeed = () => { const k = innerWidth < 700 ? 0.78 : 1.2; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true }; };
   let touring = false, aborted = false, pill = null, tourTargets = [];
   const smoothScrollTo = (y) => {
     const max = document.documentElement.scrollHeight - innerHeight;
@@ -202,7 +203,7 @@
         if (batch.length && p.y + Math.min(p.h, 160) > scrollY + innerHeight - 20) break;
         batch.push(tourTargets[i]); i++;
       }
-      await Promise.all(batch.map((el, k) => sleep(k * 90).then(() => aborted ? null : build(el, cursors[k], TOUR_SPEED, () => aborted))));
+      await Promise.all(batch.map((el, k) => sleep(k * 90).then(() => aborted ? null : build(el, cursors[k], tourSpeed(), () => aborted))));
     }
     const secs = ((performance.now() - t0) / 1000).toFixed(0);
 
