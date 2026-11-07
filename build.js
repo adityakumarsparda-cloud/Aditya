@@ -50,7 +50,24 @@
       return { el, busy: false, idleTimer: 0, ...m };
     });
   }
+  // keep every visible cursor's label fully on screen: each frame, place it beside its arrow and clamp it inside the page width
+  let tagLoop = 0;
+  function keepTagsOnScreen() {
+    const cw = document.documentElement.clientWidth;
+    let any = false;
+    cursors.forEach(c => {
+      if (c.el.classList.contains('idle')) return;
+      any = true;
+      const tag = c.el.querySelector('.sw-tag'); if (!tag) return;
+      const ax = c.el.getBoundingClientRect().left, w = tag.offsetWidth;
+      const want = Math.min(Math.max(ax + 12, 8), cw - w - 14);
+      tag.style.left = (want - ax) + 'px';
+    });
+    tagLoop = (any || touring) && layer && layer.isConnected ? requestAnimationFrame(keepTagsOnScreen) : 0;
+  }
+  const startTagLoop = () => { if (!tagLoop) tagLoop = requestAnimationFrame(keepTagsOnScreen); };
   function moveCursor(c, x, y, ms) {
+    startTagLoop();
     clearTimeout(c.idleTimer);
     c.el.classList.remove('idle');
     c.el.style.transitionDuration = ms + 'ms';
@@ -87,7 +104,47 @@
   }
 
   /* Draw a measured box around one element with one cursor, then reveal it. */
+  /* Cursor label = the section and the part being built, e.g. "Impact · Dispatch SLA". */
+  const SECTION_NAMES = { impact: 'Impact', work: 'Ops Wins', startup: 'Glass.skin', experience: 'Experience', skills: 'Toolkit', beyond: 'Beyond Work', education: 'Education' };
+  const clean = (t, n = 22) => { t = (t || '').replace(/\s+/g, ' ').trim(); return t.length > n ? t.slice(0, n - 1).trim() + '…' : t; };
+  function labelFor(el) {
+    if (el.closest('footer')) return 'Footer · Download CV';
+    if (el.matches('.ticker')) return 'Intro · Tools';
+    if (el.closest('.hero')) {
+      const part = el.matches('.eyebrow') ? 'Status' : el.matches('h1') ? 'Headline' : el.matches('.lede') ? 'About me'
+        : el.matches('.cta') ? 'Contact' : el.matches('.small-link') ? 'LinkedIn' : el.matches('.build-btn') ? 'Tour'
+        : el.matches('.hero-art') ? 'Dispatch scene' : 'Intro';
+      return 'Intro · ' + part;
+    }
+    const sec = el.closest('section[id]'); const sName = SECTION_NAMES[sec && sec.id] || 'Page';
+    let part = 'Block';
+    if (el.matches('.section-head') || el.matches('.kicker')) part = 'Title';
+    else if (el.matches('.group-label')) part = /now/i.test(el.textContent) ? 'Current role' : 'Previous role';
+    else if (el.matches('.tile')) {
+      const t = (el.querySelector('.tile-label')?.textContent || '').split('·')[0].trim();
+      const SHORT = { 'Built: automatic international dispatch documentation': 'Doc automation', 'Client accounts managed': 'Client accounts', 'On-time dispatch SLA': 'On-time SLA', 'Vendor management': 'Vendors · 4 categories' };
+      part = SHORT[t] || clean(t, 20);
+    }
+    else if (el.matches('.case-text')) {
+      const h = el.querySelector('h3')?.textContent || '';
+      part = /12\+ locations/i.test(h) ? 'Stock & dispatch' : /paperwork/i.test(h) ? 'Paperwork automation' : /e-commerce/i.test(h) ? 'E-commerce growth' : /TAT/i.test(h) ? 'Dispatch TAT' : 'Issue';
+    }
+    else if (el.matches('.case-visual')) part = el.querySelector('.flow') ? 'Flow diagram' : el.querySelector('.docgen') ? 'Doc generator' : el.querySelector('.bars') ? 'Revenue chart' : el.querySelector('.race') ? 'TAT bars' : 'Visual';
+    else if (el.matches('.timeline > li')) part = clean((el.querySelector('.org')?.textContent || '').split('·')[0], 20);
+    else if (el.matches('.store')) part = 'Store';
+    else if (el.matches('.tk-hub')) part = 'Skill map';
+    else if (el.matches('.tk-panel')) part = 'Skills';
+    else if (el.matches('.logic')) part = 'Logic chart';
+    else if (el.matches('.pipeline')) part = 'Pipeline';
+    else if (el.matches('.beyond-card')) part = clean(el.querySelector('h3')?.textContent, 18);
+    else if (el.matches('.proof')) part = 'Proof';
+    else if (el.matches('.edu li')) part = /mba/i.test(el.textContent) ? 'MBA' : /bba/i.test(el.textContent) ? 'BBA' : 'Degree';
+    else if (el.matches('.paper')) return 'Research · Publication';
+    return sName + ' · ' + part;
+  }
+
   async function build(el, c, speed, isAborted) {
+    const tag = c.el.querySelector('.sw-tag'); if (tag) tag.textContent = labelFor(el);
     const p = pagePos(el);
     await moveCursor(c, p.x - 4, p.y - 4, speed.move);
     if (isAborted()) return;
