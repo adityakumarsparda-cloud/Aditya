@@ -243,6 +243,57 @@
     toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
+  // Section-change sound: short synthesized sci-fi 'warp' cue (Web Audio, no files).
+  // Browsers only allow sound after the visitor clicks/taps/presses a key once; a speaker button mutes it.
+  const sfx = (() => {
+    let ctx = null, on = true;
+    try { on = localStorage.getItem('sfx') !== 'off'; } catch (e) {}
+    const btn = document.getElementById('sndBtn');
+    const paint = () => { if (!btn) return; btn.classList.toggle('muted', !on); btn.setAttribute('aria-pressed', String(on));
+      btn.setAttribute('aria-label', on ? 'Section sounds: on (click to mute)' : 'Section sounds: off (click to turn on)'); btn.title = on ? 'Section sounds on · click to mute' : 'Section sounds off · click to turn on'; };
+    const unlock = () => { if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) ctx = new AC(); } if (ctx && ctx.state === 'suspended') ctx.resume(); };
+    ['pointerdown', 'keydown', 'touchstart'].forEach(ev => addEventListener(ev, unlock, { passive: true }));
+    // sci-fi "warp" cue: FM-shimmer tone sweeping up + soft noise whoosh + space echo; one note per section
+    const SCALE = [0, 3, 5, 7, 10, 12, 15, 17];              // minor-pentatonic steps
+    let noiseBuf = null;
+    const play = (i = 0) => {
+      if (!on || !ctx || ctx.state !== 'running') return false;
+      const t = ctx.currentTime + 0.01, note = 330 * Math.pow(2, SCALE[i % SCALE.length] / 12);
+      // master + space echo
+      const master = ctx.createGain(); master.gain.value = 0.14; master.connect(ctx.destination);
+      const dly = ctx.createDelay(0.5), fb = ctx.createGain(), wet = ctx.createGain(), dlp = ctx.createBiquadFilter();
+      dly.delayTime.value = 0.13; fb.gain.value = 0.38; wet.gain.value = 0.45; dlp.type = 'lowpass'; dlp.frequency.value = 2600;
+      dly.connect(dlp); dlp.connect(fb); fb.connect(dly); dlp.connect(wet); wet.connect(master);
+      const bus = ctx.createGain(); bus.connect(master); bus.connect(dly);
+      // FM shimmer tone, sweeping up a fifth
+      const car = ctx.createOscillator(), mod = ctx.createOscillator(), modGain = ctx.createGain(), env = ctx.createGain();
+      car.type = 'triangle'; mod.type = 'sine';
+      car.frequency.setValueAtTime(note * 0.75, t); car.frequency.exponentialRampToValueAtTime(note * 1.5, t + 0.22);
+      mod.frequency.setValueAtTime(note * 2.01, t); mod.frequency.exponentialRampToValueAtTime(note * 3.02, t + 0.22);
+      modGain.gain.setValueAtTime(note * 1.6, t); modGain.gain.exponentialRampToValueAtTime(note * 0.2, t + 0.32);
+      mod.connect(modGain); modGain.connect(car.frequency);
+      env.gain.setValueAtTime(0.0001, t); env.gain.exponentialRampToValueAtTime(0.9, t + 0.02); env.gain.exponentialRampToValueAtTime(0.0001, t + 0.34);
+      car.connect(env); env.connect(bus);
+      car.start(t); mod.start(t); car.stop(t + 0.36); mod.stop(t + 0.36);
+      // soft high "ping" an octave above at the end of the sweep
+      const ping = ctx.createOscillator(), pg = ctx.createGain(); ping.type = 'sine'; ping.frequency.value = note * 3;
+      pg.gain.setValueAtTime(0.0001, t + 0.16); pg.gain.exponentialRampToValueAtTime(0.35, t + 0.18); pg.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
+      ping.connect(pg); pg.connect(bus); ping.start(t + 0.16); ping.stop(t + 0.44);
+      // airy whoosh: band-passed noise sweeping upward
+      if (!noiseBuf) { noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate); const d = noiseBuf.getChannelData(0); for (let k = 0; k < d.length; k++) d[k] = Math.random() * 2 - 1; }
+      const nz = ctx.createBufferSource(), nf = ctx.createBiquadFilter(), ng = ctx.createGain(); nz.buffer = noiseBuf;
+      nf.type = 'bandpass'; nf.Q.value = 3; nf.frequency.setValueAtTime(500, t); nf.frequency.exponentialRampToValueAtTime(4200, t + 0.28);
+      ng.gain.setValueAtTime(0.0001, t); ng.gain.exponentialRampToValueAtTime(0.22, t + 0.06); ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+      nz.connect(nf); nf.connect(ng); ng.connect(bus); nz.start(t); nz.stop(t + 0.32);
+      setTimeout(() => { try { master.disconnect(); } catch (e) {} }, 1600);   // free the echo after it fades
+      window.__sfxPlayed = (window.__sfxPlayed || 0) + 1;
+      return true;
+    };
+    if (btn) btn.addEventListener('click', () => { on = !on; try { localStorage.setItem('sfx', on ? 'on' : 'off'); } catch (e) {} paint(); unlock(); if (on) setTimeout(() => play(3), 30); });
+    paint();
+    return { play };
+  })();
+
   // Menu: highlight the section you're reading, with a sliding pill
   const navEl = document.querySelector('.nav nav'), ind = document.querySelector('.nav-ind');
   if (navEl && ind) {
@@ -258,10 +309,10 @@
     const spy = () => {
       let cur = null;
       secs.forEach((sec, i) => { if (sec && sec.getBoundingClientRect().top < innerHeight * 0.35) cur = links[i]; });
-      if (cur !== active) { links.forEach(l => l.classList.toggle('active', l === cur)); active = cur; }
+      if (cur !== active) { links.forEach(l => l.classList.toggle('active', l === cur)); if (cur && spy.ready) sfx.play(links.indexOf(cur)); active = cur; }
       place(active);
     };
-    addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy); spy();
+    addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy); spy(); spy.ready = true;
   }
 
   // Live date & time under "AK." (Aditya's local time: Chandigarh, IST)
