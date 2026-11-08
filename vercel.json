@@ -3,7 +3,13 @@
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "aditya-tawny.vercel.app" }],
-      "destination": "https://para-aditya.vercel.app/$1",
+      "destination": "https://xglass.online/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "para-aditya.vercel.app" }],
+      "destination": "https://xglass.online/$1",
       "permanent": true
     }
   ]
