@@ -18,7 +18,7 @@
     '#experience .section-head', '#experience .timeline > li:not(.rail)',
     '#skills .section-head', '#skills .tk-hub', '#skills .tk-panel', '#skills .logic',
     '#beyond .section-head', '#beyond .pipeline', '#beyond .beyond-card', '#beyond .proof',
-    '#education .kicker', '#education .edu li', '#education .paper',
+    '#education .section-head', '#education .ed-card', '#education .ed-timeline', '#education .overlap-note',
     '#contact .kicker', '#contact h2', '#contact .lede', '#contact .cta', '#contact .small-link',
   ];
   const FOOTER = ['footer.footer'];
@@ -138,7 +138,9 @@
     else if (el.matches('.pipeline')) part = 'Pipeline';
     else if (el.matches('.beyond-card')) part = clean(el.querySelector('h3')?.textContent, 18);
     else if (el.matches('.proof')) part = 'Proof';
-    else if (el.matches('.edu li')) part = /mba/i.test(el.textContent) ? 'MBA' : /bba/i.test(el.textContent) ? 'BBA' : 'Degree';
+    else if (el.matches('.ed-card')) part = /mba/i.test(el.textContent) ? 'MBA' : /bba/i.test(el.textContent) ? 'BBA' : 'Degree';
+    else if (el.matches('.ed-timeline')) part = 'Timeline';
+    else if (el.matches('.overlap-note')) part = 'Note';
     else if (el.matches('.paper')) return 'Research · Publication';
     return sName + ' · ' + part;
   }
@@ -222,7 +224,7 @@
 
   /* ---------- 2) Full tour ---------- */
   // Tuned so the full tour lasts about 35 seconds on laptops and on phones (phones have a longer page).
-  const tourSpeed = () => { const k = innerWidth < 700 ? 0.38 : 0.74; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true, textK: innerWidth < 700 ? 0.36 : 0.64 }; };
+  const tourSpeed = () => { const k = innerWidth < 700 ? 0.38 : 0.68; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true, textK: innerWidth < 700 ? 0.36 : 0.58 }; };
   let touring = false, aborted = false, pill = null, tourTargets = [];
   const smoothScrollTo = (y) => {
     const max = document.documentElement.scrollHeight - innerHeight;

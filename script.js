@@ -24,7 +24,7 @@
   };
 
   // Reveal + animate on view
-  const targets = document.querySelectorAll('.section-head, .tile, .case, .timeline > li:not(.rail), .skill-group, .edu li, .paper, .contact h2, .beyond-card');
+  const targets = document.querySelectorAll('.section-head, .tile, .case, .timeline > li:not(.rail), .skill-group, .ed-card, .ed-timeline, .contact h2, .beyond-card');
   targets.forEach(el => el.classList.add('reveal'));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
@@ -123,7 +123,7 @@
   addEventListener('scroll', onScrollFx, { passive: true }); addEventListener('resize', onScrollFx); onScrollFx();
 
   // Cursor glow on cards
-  document.querySelectorAll('.tile, .skill-group, .case-visual, .paper, .beyond-card').forEach(el => {
+  document.querySelectorAll('.tile, .skill-group, .case-visual, .ed-card, .beyond-card').forEach(el => {
     el.addEventListener('pointermove', (e) => {
       const r = el.getBoundingClientRect();
       el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
