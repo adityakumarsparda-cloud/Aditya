@@ -264,5 +264,23 @@
     addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy); spy();
   }
 
+  // Live date & time under "AK." (Aditya's local time: Chandigarh, IST)
+  const clock = document.getElementById('liveClock');
+  if (clock) {
+    const tz = 'Asia/Kolkata';
+    const dFull = new Intl.DateTimeFormat('en-IN', { timeZone: tz, weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    const dShort = new Intl.DateTimeFormat('en-IN', { timeZone: tz, day: 'numeric', month: 'short' });
+    const tFull = new Intl.DateTimeFormat('en-IN', { timeZone: tz, hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+    const tShort = new Intl.DateTimeFormat('en-IN', { timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true });
+    const iso = new Intl.DateTimeFormat('sv-SE', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const tick = () => {
+      const now = new Date(), small = innerWidth < 480;
+      const date = (small ? dShort : dFull).format(now), time = (small ? tShort : tFull).format(now).replace(/\s?(am|pm)$/i, (m) => ' ' + m.trim().toUpperCase());
+      clock.textContent = `${date.replace(/,\s*(\d{4})$/, ' $1')} · ${time} IST`;
+      clock.setAttribute('datetime', iso.format(now).replace(' ', 'T') + '+05:30');
+    };
+    tick(); setInterval(tick, 1000);
+  }
+
   $('yr').textContent = new Date().getFullYear();
 })();
