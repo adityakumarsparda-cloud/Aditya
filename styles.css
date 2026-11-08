@@ -873,3 +873,6 @@ body.building .to-top { opacity: 0; pointer-events: none; }
   .hero .cta { margin-top: 18px; }
 }
 .cm-row { grid-template-columns: 112px 1fr 48px; }
+/* photo stays still: no rotating ring */
+.avatar-wrap, .avatar { animation: none !important; transform: none; }
+.avatar-wrap:hover .avatar { transform: none; }
