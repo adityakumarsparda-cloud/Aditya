@@ -251,8 +251,23 @@
     const btn = document.getElementById('sndBtn');
     const paint = () => { if (!btn) return; btn.classList.toggle('muted', !on); btn.setAttribute('aria-pressed', String(on));
       btn.setAttribute('aria-label', on ? 'Section sounds: on (click to mute)' : 'Section sounds: off (click to turn on)'); btn.title = on ? 'Section sounds on · click to mute' : 'Section sounds off · click to turn on'; };
-    const unlock = () => { if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) ctx = new AC(); } if (ctx && ctx.state === 'suspended') ctx.resume(); };
-    ['pointerdown', 'keydown', 'touchstart'].forEach(ev => addEventListener(ev, unlock, { passive: true }));
+    const hint = document.getElementById('sndHint');
+    const showHint = () => {
+      if (!hint) return;
+      if (btn) { const r = btn.getBoundingClientRect(); hint.style.right = Math.max(8, document.documentElement.clientWidth - r.right - 2) + 'px'; }  // pointer sits under the speaker
+      hint.classList.toggle('show', on && !(ctx && ctx.state === 'running'));
+    };
+    addEventListener('resize', () => { if (hint && hint.classList.contains('show')) showHint(); });
+    const unlock = () => {
+      if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) ctx = new AC({ latencyHint: 'interactive' }); }
+      if (!ctx) return;
+      const ready = () => { showHint();
+        if (!ctx.__warm) { ctx.__warm = true; const o = ctx.createOscillator(), g = ctx.createGain(); g.gain.value = 0; o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.05); } };
+      if (ctx.state === 'suspended') ctx.resume().then(ready).catch(() => {}); else ready();
+    };
+    // every interaction browsers accept as "the visitor wants this page to make sound"
+    ['pointerdown', 'pointerup', 'mousedown', 'touchend', 'click', 'keydown'].forEach(ev => addEventListener(ev, unlock, { passive: true, capture: true }));
+    setTimeout(showHint, 1800);
     // sci-fi "warp" cue: FM-shimmer tone sweeping up + soft noise whoosh + space echo; one note per section
     const SCALE = [0, 3, 5, 7, 10, 12, 15, 17];              // minor-pentatonic steps
     let noiseBuf = null;
@@ -260,7 +275,8 @@
       if (!on || !ctx || ctx.state !== 'running') return false;
       const t = ctx.currentTime + 0.01, note = 330 * Math.pow(2, SCALE[i % SCALE.length] / 12);
       // master + space echo
-      const master = ctx.createGain(); master.gain.value = 0.14; master.connect(ctx.destination);
+      if (play.last && t - play.lastT < 0.3) { try { play.last.gain.cancelScheduledValues(t); play.last.gain.setTargetAtTime(0.0001, t, 0.03); } catch (e) {} }
+      const master = ctx.createGain(); master.gain.value = 0.14; master.connect(ctx.destination); play.last = master; play.lastT = t;
       const dly = ctx.createDelay(0.5), fb = ctx.createGain(), wet = ctx.createGain(), dlp = ctx.createBiquadFilter();
       dly.delayTime.value = 0.13; fb.gain.value = 0.38; wet.gain.value = 0.45; dlp.type = 'lowpass'; dlp.frequency.value = 2600;
       dly.connect(dlp); dlp.connect(fb); fb.connect(dly); dlp.connect(wet); wet.connect(master);
@@ -289,7 +305,7 @@
       window.__sfxPlayed = (window.__sfxPlayed || 0) + 1;
       return true;
     };
-    if (btn) btn.addEventListener('click', () => { on = !on; try { localStorage.setItem('sfx', on ? 'on' : 'off'); } catch (e) {} paint(); unlock(); if (on) setTimeout(() => play(3), 30); });
+    if (btn) btn.addEventListener('click', () => { on = !on; try { localStorage.setItem('sfx', on ? 'on' : 'off'); } catch (e) {} paint(); showHint(); unlock(); if (on) setTimeout(() => play(3), 60); });
     paint();
     return { play };
   })();
@@ -309,7 +325,11 @@
     const spy = () => {
       let cur = null;
       secs.forEach((sec, i) => { if (sec && sec.getBoundingClientRect().top < innerHeight * 0.35) cur = links[i]; });
-      if (cur !== active) { links.forEach(l => l.classList.toggle('active', l === cur)); if (cur && spy.ready) sfx.play(links.indexOf(cur)); active = cur; }
+      if (cur !== active) { links.forEach(l => l.classList.toggle('active', l === cur)); active = cur; }
+      // sound: the moment a new section's top comes into view (15% up from the bottom of the screen)
+      let entered = -1;
+      secs.forEach((sec, i) => { if (sec && sec.getBoundingClientRect().top < innerHeight * 0.85) entered = i; });
+      if (entered !== spy.entered) { if (spy.ready && entered > -1 && entered !== spy.entered) sfx.play(entered); spy.entered = entered; }
       place(active);
     };
     addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy); spy(); spy.ready = true;

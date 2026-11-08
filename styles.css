@@ -930,3 +930,9 @@ body.building .to-top { opacity: 0; pointer-events: none; }
 .snd-btn.muted .snd-off { display: block; }
 @media (max-width: 1060px) { .snd-btn { margin-left: auto; } .ops-btn { margin-left: 0; } }
 @media (max-width: 380px) { .nav-inner { gap: 6px; } .snd-btn { width: 32px; height: 32px; } .snd-btn svg { width: 16px; height: 16px; } .ops-btn { padding: 6px 9px 6px 7px; font-size: 11.5px; gap: 5px; } .ops-ic { width: 16px; height: 16px; } .live-clock { font-size: 9.5px; gap: 4px; } }
+/* "Tap anywhere for sound" hint, shown until the browser allows sound */
+.snd-hint { position: fixed; top: 74px; right: 16px; z-index: 65; padding: 8px 12px; border-radius: 999px; font: 500 12px var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--accent); box-shadow: 0 8px 22px rgb(0 0 0 / .3); opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity .3s ease-out, transform .3s ease-out; }
+.snd-hint::before { content: ""; position: absolute; top: -6px; right: 14px; width: 10px; height: 10px; background: var(--surface); border-left: 1px solid var(--accent); border-top: 1px solid var(--accent); transform: rotate(45deg); }
+.snd-hint.show { opacity: 1; transform: none; animation: hint-bob 2.4s ease-in-out 1s infinite; }
+@keyframes hint-bob { 50% { transform: translateY(3px); } }
+body.building .snd-hint { opacity: 0; }
