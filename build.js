@@ -5,12 +5,15 @@
       rebuilds everything from the hero down to Contact. Skip any time (button or Esc). */
 (() => {
   const CREW = [
-    { name: 'Inventory', color: '#d9480f' },
-    { name: 'Dispatch',  color: '#2b8a3e' },
-    { name: 'Vendors',   color: '#2e6bd9' },
-    { name: 'MIS',       color: '#7a4bd1' },
+    { name: 'Inventory', color: '#ff6b9a' },
+    { name: 'Dispatch',  color: '#ffd43b' },
+    { name: 'Vendors',   color: '#3bc9db' },
+    { name: 'MIS',       color: '#69db7c' },
+    { name: 'Audit',     color: '#b197fc' },
   ];
-  const HERO = ['.hero .avatar-wrap', '.hero .eyebrow', '.hero h1', '.hero .lede', '.hero .cta', '.hero .small-link', '.hero .build-btn', '.hero-art', '.ticker'];
+  const SWARM_COLORS = ['#ff6b9a', '#ffd43b', '#3bc9db', '#69db7c', '#b197fc', '#ff922b', '#74c0fc', '#f783ac'];
+  const BLUE = '#4d8dff', RED = 'rgba(255, 70, 70, .75)';
+  const HERO = ['.hero .avatar-wrap', '.hero .eyebrow', '.hero h1', '.hero .lede', '.hero .seeking', '.hero .cta', '.hero .small-links', '.hero .build-btn', '.hero-art', '.ticker'];
   const SECTIONS = [
     '#impact .section-head', '#impact .group-label', '#impact .tile',
     '#work .section-head', '#work .case-text', '#work .case-visual',
@@ -31,7 +34,8 @@
     return out.sort(docOrder);
   };
   const pagePos = (el) => { const r = el.getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height }; };
-  const svgArrow = (c) => `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+  const svgArrow = (c) => `<svg class="sw-arrow" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="${c}" stroke="#0b0b0b" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
+  const svgBeam = (c) => `<svg class="sw-beam" viewBox="0 0 12 22" width="9" height="17" aria-hidden="true"><path d="M2 2h3l1 1 1-1h3M6 3v16M2 20h3l1-1 1 1h3" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 
   /* ---------- shared layer + cursors ---------- */
   let layer = null, cursors = [];
@@ -44,7 +48,7 @@
     cursors = CREW.map((m, i) => {
       const el = document.createElement('div');
       el.className = 'sw-cursor idle';
-      el.innerHTML = svgArrow(m.color) + `<span class="sw-tag" style="background:${m.color}">${m.name}</span>`;
+      el.innerHTML = svgArrow(m.color) + svgBeam(m.color);
       el.style.transform = `translate(${innerWidth - 60}px, ${scrollY + innerHeight * 0.3 + i * 40}px)`;
       layer.appendChild(el);
       return { el, busy: false, idleTimer: 0, ...m };
@@ -67,7 +71,6 @@
   }
   const startTagLoop = () => { if (!tagLoop) tagLoop = requestAnimationFrame(keepTagsOnScreen); };
   function moveCursor(c, x, y, ms) {
-    startTagLoop();
     clearTimeout(c.idleTimer);
     c.el.classList.remove('idle');
     c.el.style.transitionDuration = ms + 'ms';
@@ -77,6 +80,51 @@
   function parkLater(c) {
     clearTimeout(c.idleTimer);
     c.idleTimer = setTimeout(() => c.el.classList.add('idle'), 1400);
+  }
+
+  /* ---------- video-style extras ---------- */
+  const sparkle = (x, y, color) => {
+    if (!layer) return;
+    const s = document.createElement('span'); s.className = 'sw-plus'; s.textContent = '+';
+    s.style.cssText = `left:${x}px;top:${y}px;color:${color || SWARM_COLORS[(Math.random() * SWARM_COLORS.length) | 0]}`;
+    layer.appendChild(s); setTimeout(() => s.remove(), 900);
+  };
+  const guides = (p) => {
+    if (!layer) return;
+    const v = document.createElement('div'); v.className = 'sw-guide sw-guide-v';
+    v.style.cssText = `left:${p.x}px;top:${scrollY}px;height:${innerHeight}px;background:${RED}`;
+    const h = document.createElement('div'); h.className = 'sw-guide sw-guide-h';
+    h.style.cssText = `top:${p.y}px;left:0;width:100%;background:${RED}`;
+    layer.appendChild(v); layer.appendChild(h); setTimeout(() => { v.remove(); h.remove(); }, 650);
+  };
+  let ruler = null;
+  const rulerShow = (p) => { if (!ruler) return; const m = ruler.querySelector('.sw-ruler-mark'); m.style.left = (p.x - scrollX) + 'px'; m.style.width = p.w + 'px'; m.textContent = Math.round(p.w); };
+  // a swarm of small cursors that keeps drifting around the screen while the page is rebuilt
+  let swarm = [], swarmRaf = 0, sparkleTimer = 0;
+  function startSwarm(n) {
+    const W = () => document.documentElement.clientWidth, H = () => innerHeight;
+    swarm = Array.from({ length: n }, (_, i) => {
+      const el = document.createElement('div'); el.className = 'sw-cursor sw-mini';
+      el.innerHTML = svgArrow(SWARM_COLORS[i % SWARM_COLORS.length]);
+      layer.appendChild(el);
+      const x = W() / 2, y = scrollY + H() / 2;
+      return { el, x, y, tx: Math.random() * W(), ty: scrollY + Math.random() * H(), next: 0 };
+    });
+    const step = (t) => {
+      swarm.forEach(b => {
+        if (t > b.next) { b.tx = 20 + Math.random() * (W() - 40); b.ty = scrollY + 70 + Math.random() * (H() - 110); b.next = t + 900 + Math.random() * 1800; }
+        b.x += (b.tx - b.x) * 0.045; b.y += (b.ty - b.y) * 0.045;
+        b.el.style.transform = `translate(${b.x}px, ${b.y}px)`;
+      });
+      swarmRaf = requestAnimationFrame(step);
+    };
+    swarmRaf = requestAnimationFrame(step);
+    sparkleTimer = setInterval(() => sparkle(20 + Math.random() * (W() - 40), scrollY + 70 + Math.random() * (H() - 110)), 140);
+  }
+  function stopSwarm() {
+    cancelAnimationFrame(swarmRaf); clearInterval(sparkleTimer);
+    swarm.forEach(b => { b.el.style.transition = 'opacity .4s ease-out'; b.el.style.opacity = '0'; setTimeout(() => b.el.remove(), 450); });
+    swarm = [];
   }
 
   /* Every piece of text inside a block: headings, lines, list items, chips, numbers, buttons. */
@@ -98,7 +146,18 @@
       t.style.transition = `clip-path ${d}ms steps(${Math.max(4, Math.min(n, 36))}, end)`;
       t.classList.add('tx-on');
       const r = t.getBoundingClientRect();
-      if (r.width) moveCursor(c, r.right + scrollX + 2, r.top + scrollY + r.height * 0.6, Math.min(d, 220));
+      if (r.width) {
+        const x0 = r.left + scrollX, y0 = r.top + scrollY, ch = Math.min(r.height, 22);
+        const tb = document.createElement('div'); tb.className = 'sw-tbox';
+        tb.style.cssText = `left:${x0 - 3}px;top:${y0 - 2}px;width:${r.width + 6}px;height:${r.height + 4}px`;
+        const caret = document.createElement('div'); caret.className = 'sw-caret';
+        caret.style.cssText = `left:${x0}px;top:${y0 + r.height - ch}px;height:${ch}px;transition:transform ${d}ms steps(${Math.max(4, Math.min(n, 36))}, end)`;
+        layer.appendChild(tb); layer.appendChild(caret); caret.getBoundingClientRect();
+        caret.style.transform = `translateX(${r.width}px)`;
+        c.el.classList.add('typing');
+        moveCursor(c, x0 + r.width + 6, y0 + r.height - ch / 2, Math.min(d, 240));
+        setTimeout(() => { tb.classList.add('done'); caret.classList.add('done'); setTimeout(() => { tb.remove(); caret.remove(); }, 300); }, d + 120);
+      }
       await sleep(d * 0.55);
     }
   }
@@ -146,22 +205,26 @@
   }
 
   async function build(el, c, speed, isAborted) {
-    const tag = c.el.querySelector('.sw-tag'); if (tag) tag.textContent = labelFor(el);
     const p = pagePos(el);
+    c.el.classList.remove('typing');
     await moveCursor(c, p.x - 4, p.y - 4, speed.move);
     if (isAborted()) return;
+    // Figma-style selection: thin blue outline, white corner handles, size badge centred underneath, red alignment guides
     const box = document.createElement('div');
     box.className = 'sw-box';
-    box.style.cssText = `left:${p.x}px;top:${p.y}px;--c:${c.color};transition-duration:${speed.draw}ms,${speed.draw}ms,350ms`;
-    box.innerHTML = `<span class="sw-dim" style="background:${c.color}">${Math.round(p.w)} × ${Math.round(p.h)}</span>`;
+    box.style.cssText = `left:${p.x}px;top:${p.y}px;--c:${BLUE};transition-duration:${speed.draw}ms,${speed.draw}ms,350ms`;
+    box.innerHTML = `<i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i><span class="sw-dim">${Math.round(p.w)} × ${Math.round(p.h)}</span>`;
+    guides(p); rulerShow(p); sparkle(p.x + p.w, p.y, c.color);
     layer.appendChild(box);
     box.getBoundingClientRect();
     box.style.width = p.w + 'px';
     box.style.height = p.h + 'px';
     await moveCursor(c, p.x + p.w - 6, p.y + p.h - 6, speed.draw);
+    sparkle(p.x + p.w, p.y + p.h, c.color);
     el.classList.add('built', 'in');
     if (el.matches('.hero h1')) await typeHeadline(el, c, isAborted);
     if (speed.text) await typeTexts(el, c, isAborted, speed.textK || 1);
+    c.el.classList.remove('typing');
     await sleep(speed.hold);
     box.classList.add('done');
     setTimeout(() => box.remove(), 400);
@@ -169,6 +232,7 @@
   async function typeHeadline(h1, c, isAborted) {
     const words = [...h1.querySelectorAll('.w')];
     words.forEach(w => w.classList.remove('on'));
+    c.el.classList.add('typing');
     for (const w of words) {
       if (isAborted()) break;
       const p = pagePos(w);
@@ -224,7 +288,7 @@
 
   /* ---------- 2) Full tour ---------- */
   // Tuned so the full tour lasts about 35 seconds on laptops and on phones (phones have a longer page).
-  const tourSpeed = () => { const k = innerWidth < 700 ? 0.38 : 0.68; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true, textK: innerWidth < 700 ? 0.36 : 0.58 }; };
+  const tourSpeed = () => { const k = innerWidth < 700 ? 0.36 : 0.58; return { move: Math.round(390 * k), draw: Math.round(320 * k), hold: Math.round(150 * k), text: true, textK: innerWidth < 700 ? 0.36 : 0.58 }; };
   let touring = false, aborted = false, pill = null, tourTargets = [];
   const smoothScrollTo = (y) => {
     const max = document.documentElement.scrollHeight - innerHeight;
@@ -242,7 +306,9 @@
     tourTargets.forEach(el => { el.classList.add('bt'); el.classList.remove('built'); textsIn(el).forEach(t => { t.classList.add('tx'); t.classList.remove('tx-on'); t.style.transition = ''; }); });
     document.body.classList.add('building');
     ensureLayer();
-    cursors.forEach((c, i) => { c.el.style.transitionDuration = '0ms'; c.el.style.transform = `translate(${innerWidth / 2 + (i - 1.5) * 60}px, ${scrollY + innerHeight + 40}px)`; });
+    cursors.forEach((c, i) => { c.el.style.transitionDuration = '0ms'; c.el.style.transform = `translate(${innerWidth / 2 + (i - 2) * 26}px, ${scrollY + innerHeight / 2}px)`; c.el.classList.remove('idle'); });
+    startSwarm(innerWidth < 700 ? 10 : 16);
+    ruler = document.createElement('div'); ruler.className = 'sw-ruler'; ruler.innerHTML = '<span class="sw-ruler-mark"></span>'; document.body.appendChild(ruler);
 
     pill = document.createElement('div');
     pill.className = 'sw-pill';
@@ -251,7 +317,7 @@
     pill.querySelector('.sw-skip').addEventListener('click', () => { aborted = true; });
 
     const t0 = performance.now();
-    await sleep(300);
+    await sleep(900);                                   // a moment of empty, dark canvas with the swarm moving, as in the video
     let i = 0;
     while (i < tourTargets.length && !aborted) {
       const fp = pagePos(tourTargets[i]);
@@ -269,7 +335,9 @@
     tourTargets.forEach(el => el.classList.add('built', 'in'));
     document.querySelectorAll('.hero h1 .w').forEach(w => w.classList.add('on'));
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
-    cursors.forEach(c => parkLater(c));
+    cursors.forEach(c => { c.el.classList.remove('typing'); parkLater(c); });
+    stopSwarm(); if (ruler) { ruler.remove(); ruler = null; }
+    if (layer) layer.querySelectorAll('.sw-tbox, .sw-caret, .sw-guide, .sw-plus').forEach(n => n.remove());
     document.querySelectorAll('.tx').forEach(t => t.classList.add('tx-on'));
     setTimeout(() => { document.body.classList.remove('building'); document.querySelectorAll('.tx').forEach(t => { t.classList.remove('tx', 'tx-on'); t.style.transition = ''; }); }, 450);
 

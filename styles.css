@@ -936,3 +936,35 @@ body.building .to-top { opacity: 0; pointer-events: none; }
 .snd-hint.show { opacity: 1; transform: none; animation: hint-bob 2.4s ease-in-out 1s infinite; }
 @keyframes hint-bob { 50% { transform: translateY(3px); } }
 body.building .snd-hint { opacity: 0; }
+
+/* ───────── Build effect, video style (swarm, Figma selection, caret, guides) ───────── */
+.sw-tag { display: none !important; }
+.sw-cursor { filter: drop-shadow(0 2px 4px rgb(0 0 0 / .5)); }
+.sw-cursor .sw-beam { display: none; }
+.sw-cursor.typing .sw-arrow { display: none; }
+.sw-cursor.typing .sw-beam { display: block; margin: -8px 0 0 -4px; }
+.sw-mini { transition: none !important; opacity: .95; }
+.sw-mini .sw-arrow { width: 14px; height: 14px; }
+
+.sw-box { border: 1px solid #4d8dff !important; background: rgba(77, 141, 255, .035) !important; border-radius: 1px !important; }
+.sw-box::before, .sw-box::after { display: none !important; }
+.sw-box .h { position: absolute; width: 6px; height: 6px; background: #fff; border: 1px solid #4d8dff; }
+.sw-box .tl { left: -4px; top: -4px; } .sw-box .tr { right: -4px; top: -4px; } .sw-box .bl { left: -4px; bottom: -4px; } .sw-box .br { right: -4px; bottom: -4px; }
+.sw-box .sw-dim { left: 50% !important; top: calc(100% + 6px) !important; transform: translateX(-50%); background: #3b82f6 !important; color: #fff; padding: 1px 6px !important; border-radius: 3px !important; font: 500 10px/1.5 var(--mono) !important; }
+
+.sw-plus { position: absolute; transform: translate(-50%, -50%) scale(.3); font: 300 18px/1 var(--sans); pointer-events: none; animation: sw-plus .9s ease-out forwards; }
+@keyframes sw-plus { 15% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 70% { opacity: .9; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(.8) rotate(45deg); } }
+
+.sw-guide { position: absolute; pointer-events: none; opacity: 0; animation: sw-guide .65s ease-out forwards; }
+.sw-guide-v { width: 1px; } .sw-guide-h { height: 1px; }
+@keyframes sw-guide { 15%, 60% { opacity: 1; } 100% { opacity: 0; } }
+
+.sw-ruler { position: fixed; left: 0; right: 0; top: 64px; height: 16px; z-index: 74; pointer-events: none; background: rgb(14 14 14 / .9); border-bottom: 1px solid #2e2d2a;
+  background-image: repeating-linear-gradient(90deg, #4a4843 0 1px, transparent 1px 10px), repeating-linear-gradient(90deg, #6b6863 0 1px, transparent 1px 100px); background-size: 100% 5px, 100% 9px; background-position: 0 100%, 0 100%; background-repeat: repeat-x; }
+.sw-ruler-mark { position: absolute; top: 0; height: 100%; background: rgb(77 141 255 / .35); border-left: 1px solid #4d8dff; border-right: 1px solid #4d8dff; font: 500 9px/16px var(--mono); color: #cfe0ff; text-align: center; transition: left .3s ease-out, width .3s ease-out; }
+
+.sw-tbox { position: absolute; border: 1px solid #4d8dff; border-radius: 1px; pointer-events: none; transition: opacity .3s ease-out; }
+.sw-caret { position: absolute; width: 1.5px; background: #fff; pointer-events: none; animation: sw-blink .5s steps(1) infinite; transition-property: transform, opacity; }
+.sw-tbox.done, .sw-caret.done { opacity: 0; }
+@keyframes sw-blink { 50% { background: transparent; } }
+body.building .sw-pill { top: 88px; }
