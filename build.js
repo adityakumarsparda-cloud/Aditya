@@ -10,7 +10,7 @@
     { name: 'Vendors',   color: '#2e6bd9' },
     { name: 'MIS',       color: '#7a4bd1' },
   ];
-  const HERO = ['.hero .eyebrow', '.hero h1', '.hero .lede', '.hero .cta', '.hero .small-link', '.hero .build-btn', '.hero-art', '.ticker'];
+  const HERO = ['.hero .avatar-wrap', '.hero .eyebrow', '.hero h1', '.hero .lede', '.hero .cta', '.hero .small-link', '.hero .build-btn', '.hero-art', '.ticker'];
   const SECTIONS = [
     '#impact .section-head', '#impact .group-label', '#impact .tile',
     '#work .section-head', '#work .case-text', '#work .case-visual',
@@ -111,7 +111,7 @@
     if (el.closest('footer')) return 'Footer · Download CV';
     if (el.matches('.ticker')) return 'Intro · Tools';
     if (el.closest('.hero')) {
-      const part = el.matches('.eyebrow') ? 'Status' : el.matches('h1') ? 'Headline' : el.matches('.lede') ? 'About me'
+      const part = el.matches('.avatar-wrap') ? 'Photo' : el.matches('.eyebrow') ? 'Status' : el.matches('h1') ? 'Headline' : el.matches('.lede') ? 'About me'
         : el.matches('.cta') ? 'Contact' : el.matches('.small-link') ? 'LinkedIn' : el.matches('.build-btn') ? 'Tour'
         : el.matches('.hero-art') ? 'Dispatch scene' : 'Intro';
       return 'Intro · ' + part;

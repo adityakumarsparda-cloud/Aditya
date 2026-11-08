@@ -84,7 +84,10 @@
       </div>
       <div class="hero-grid">
       <div class="hero-copy">
-      <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> Open to new roles · Chandigarh, open to relocate</p>
+      <div class="hero-id">
+        <span class="avatar-wrap"><picture><source srcset="aditya.webp" type="image/webp"><img class="avatar" src="aditya.jpg" alt="Photo of Aditya Kumar" width="64" height="64" decoding="async"></picture><span class="avatar-dot" aria-hidden="true"></span></span>
+        <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> Open to new roles · Chandigarh, open to relocate</p>
+      </div>
       <h1>I keep products <em>moving</em> — from shelf to doorstep, on time.</h1>
       <p class="lede">I'm <strong>Aditya Kumar</strong>, an Operations &amp; Inventory Manager passionate about building smarter, technology-driven operations. With 4+ years across D2C e-commerce, healthcare, and marketplaces, I leverage automation, data analytics, and process optimisation to improve inventory visibility, accelerate dispatch, and strengthen operational performance.</p>
       <div class="seeking" aria-label="Roles I'm looking for">
@@ -351,15 +354,20 @@
       <article class="case">
         <div class="case-text">
           <p class="case-meta"><span class="badge-neutral">Courier · RTO</span> Cash-on-delivery orders</p>
-          <h3><svg class="h3-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>Cutting COD returns before they ship</h3>
+          <h3><svg class="h3-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>Cutting COD returns from 37% to under 8%</h3>
           <dl>
             <dt>Issue</dt><dd>Full cash-on-delivery (COD) orders were coming back as RTO (return to origin), costing two-way shipping on every failed order.</dd>
             <dt>Root cause</dt><dd>Orders shipped on unverified addresses and single phone numbers, and some full-COD buyers weren't committed to the purchase.</dd>
             <dt>How I handled it</dt><dd>Before dispatch, we confirm every full-COD order with the customer, re-verify the address and add an alternate phone number. Then we moved to advance COD, a small amount paid upfront, so the buyer is genuine and actually wants the product.</dd>
-            <dt>Result</dt><dd>Only confirmed, committed orders leave the warehouse, so fewer COD parcels come back as RTO.</dd>
+            <dt>Result</dt><dd>COD RTO dropped from <strong>37% to under 8%</strong> within a single month. Only confirmed, committed orders now leave the warehouse.</dd>
           </dl>
         </div>
-        <figure class="case-visual" aria-label="COD order checks: confirm with the customer, re-verify address, add alternate phone, take advance COD, then dispatch">
+        <figure class="case-visual" aria-label="COD RTO fell from 37% to under 8% in one month, after these checks: confirm with the customer, re-verify address, add alternate phone, take advance COD, then dispatch">
+          <div class="cod-metric" data-animate>
+            <div class="cm-row"><span class="cm-lbl">Before</span><div class="cm-track"><div class="cm-bar cm-before" style="--w:37%"></div></div><span class="cm-val">37%</span></div>
+            <div class="cm-row"><span class="cm-lbl">1 month later</span><div class="cm-track"><div class="cm-bar cm-after" style="--w:8%"></div></div><span class="cm-val cm-good">&lt;8%</span></div>
+            <p class="cm-cap">COD RTO rate, bars to scale</p>
+          </div>
           <ol class="codflow">
             <li style="--s:0"><b>COD order</b><small>full cash on delivery</small></li>
             <li style="--s:1"><b>Confirm with customer</b><small>call before dispatch</small></li>

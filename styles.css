@@ -842,3 +842,34 @@ body.building .to-top { opacity: 0; pointer-events: none; }
 }
 @media (min-width: 961px) { .hero { padding-top: 36px; } .hero h1 { margin: 18px 0 18px; } }
 .wa-float.hide { visibility: hidden; transition: opacity .3s ease-out, visibility 0s linear .3s; }
+
+/* ───────── Hero photo ───────── */
+.hero-id { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.avatar-wrap { position: relative; flex: none; width: 64px; height: 64px; border-radius: 50%; padding: 3px; background: conic-gradient(from 210deg, var(--accent), #ffb37d, var(--accent), #b5502f, var(--accent)); box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent); animation: ring-spin 8s linear infinite; }
+.avatar-wrap picture, .avatar { display: block; width: 100%; height: 100%; border-radius: 50%; }
+.avatar { object-fit: cover; border: 3px solid var(--bg); animation: ring-spin 8s linear infinite reverse; transition: transform .25s ease-out; }
+.avatar-wrap:hover .avatar { transform: scale(1.06); }
+.avatar-dot { position: absolute; right: 1px; bottom: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--good); border: 3px solid var(--bg); animation: none; }
+@keyframes ring-spin { to { transform: rotate(360deg); } }
+@media (max-width: 520px) { .avatar-wrap { width: 56px; height: 56px; } }
+
+/* ───────── COD before/after metric ───────── */
+.cod-metric { display: grid; gap: 10px; margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px dashed var(--line); }
+.cm-row { display: grid; grid-template-columns: 96px 1fr 48px; align-items: center; gap: 10px; font: 500 12.5px var(--mono); }
+.cm-lbl { color: var(--ink-3); }
+.cm-track { height: 12px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.cm-bar { height: 100%; width: 0; border-radius: 99px; transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+.cm-before { background: #e8590c; }
+.cm-after { background: var(--good); transition-delay: .5s; }
+.in .cm-bar, .built .cm-bar, .cod-metric.in .cm-bar { width: var(--w); }
+.cm-val { text-align: right; font-weight: 600; color: #ff9b6a; }
+.cm-good { color: var(--good); }
+.cm-cap { font: 400 11.5px var(--mono); color: var(--ink-3); }
+@media (min-width: 961px) {
+  .avatar-wrap { width: 54px; height: 54px; }
+  .hero { padding-top: 28px; }
+  .hero h1 { margin: 14px 0 16px; }
+  .seeking { margin-top: 14px; }
+  .hero .cta { margin-top: 18px; }
+}
+.cm-row { grid-template-columns: 112px 1fr 48px; }
