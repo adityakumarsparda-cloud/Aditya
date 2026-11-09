@@ -497,19 +497,19 @@ body.sw-scroll .bt:not(.built) { opacity: 0 !important; transform: translateY(8p
 .store-toast.show { animation: toast 1.8s ease-in-out; }
 .toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
 @keyframes toast { 0% { opacity: 0; transform: translateY(14px); } 15%, 80% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-6px); } }
-.startup-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.startup-stats .tile-dark { grid-column: span 2; background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.startup-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-content: start; }
+.startup-stats .tile { display: flex; flex-direction: column; }
+.startup-stats .tile .tile-note { margin-top: auto; }
+.startup-stats .tile-dark { grid-column: 1 / -1; background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .startup-stats .tile-dark .tile-label, .startup-stats .tile-dark .tile-note { color: color-mix(in srgb, var(--bg) 70%, transparent); }
 .startup-stats .tile-dark .big { font-size: clamp(54px, 7vw, 88px); }
 .live { display: inline-flex; align-items: center; gap: 12px; color: var(--good); }
 .live-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 60%, transparent); animation: pulse 2s infinite; }
-@media (max-width: 520px) { .startup-stats { grid-template-columns: 1fr; } .startup-stats .tile-dark { grid-column: auto; } }
+@media (max-width: 680px) { .startup-stats { grid-template-columns: 1fr; } .startup-stats .tile-dark { grid-column: auto; } }
 .store { display: flex; flex-direction: column; }
 .store-body { flex: 1; }
 .store-toast { top: 62px; right: 16px; bottom: auto; }
-.startup-stats .tile:last-child { grid-column: span 2; flex-direction: row; align-items: center; justify-content: space-between; }
-.startup-stats .tile:last-child .tile-note { margin: 0; }
-@media (max-width: 520px) { .startup-stats .tile:last-child { grid-column: auto; flex-direction: column; align-items: flex-start; } }
+.startup-stats .tile:last-child { grid-column: auto; }
 
 /* Tour: text is typed out piece by piece */
 body.building .tx { clip-path: inset(0 100% 0 0); }
