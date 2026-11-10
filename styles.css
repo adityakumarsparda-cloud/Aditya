@@ -45,6 +45,13 @@
 :root                    { --accent-soft: color-mix(in srgb, var(--accent) 24%, #0a0a09); }
 :root[data-mode="light"] { --accent-soft: color-mix(in srgb, var(--accent) 13%, #ffffff); }
 
+/* ---------- Font sets (swap the display face; body stays readable) ----------
+   Editorial = Instrument Serif (default), Classic = Fraunces,
+   Modern = Space Grotesk (geometric sans display). */
+:root[data-font="classic"] { --serif: "Fraunces", Georgia, serif; }
+:root[data-font="modern"]  { --serif: "Space Grotesk", "Inter", system-ui, sans-serif; }
+:root[data-font="modern"] .hero h1, :root[data-font="modern"] .section h2 { letter-spacing: -0.03em; }
+
 body, .nav, .tile, .store, .card, .chip, .seek-chip, .btn, .ops-btn,
 .store-img, .accent, em, .kicker, a { transition: background-color .4s ease, border-color .4s ease, color .4s ease, fill .4s ease; }
 
@@ -1018,3 +1025,12 @@ body.building .sw-pill { top: 88px; }
 .theme-toast.show { opacity: 1; transform: translateY(0); }
 .theme-toast .tt-dot { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); }
 @media (max-width: 420px) { .theme-toast { left: 14px; bottom: 70px; } }
+
+/* ---------- Font picker ---------- */
+.font-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin: 2px 2px 4px; border-radius: 11px; background: var(--surface-2); border: 1px solid var(--line); }
+.font-opt { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 4px 6px; border: 0; border-radius: 8px; background: none; color: var(--ink-2); cursor: pointer; transition: background .18s ease, color .18s ease; }
+.font-opt .fo-aa { font-size: 20px; line-height: 1.1; color: var(--ink); }
+.font-opt .fo-name { font: 500 11px var(--sans); }
+.font-opt:hover { color: var(--ink); }
+.font-opt.active { background: var(--surface); color: var(--accent); box-shadow: 0 1px 4px rgb(0 0 0 / .2); }
+.font-opt.active .fo-aa { color: var(--accent); }

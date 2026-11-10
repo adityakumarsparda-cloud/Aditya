@@ -289,19 +289,24 @@
     const btn = document.getElementById('themeBtn');
     const opts = [...dock.querySelectorAll('.theme-opt')];
     const modeOpts = [...dock.querySelectorAll('.mode-opt')];
+    const fontOpts = [...dock.querySelectorAll('.font-opt')];
     const THEMES = opts.map(o => o.dataset.themeVal);         // amber, rose, violet, ocean, emerald
     const MODES = ['light', 'dark', 'system'];
+    const FONTS = fontOpts.map(o => o.dataset.fontVal);       // editorial, classic, modern
     const mql = matchMedia('(prefers-color-scheme: light)');
     const ls = { get: (k, d) => { try { return localStorage.getItem(k) || d; } catch (e) { return d; } },
                  set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
     let theme = ls.get('theme', 'amber');
     let mode = ls.get('mode', 'dark');                         // light | dark | system (preference)
+    let font = ls.get('font', 'editorial');                    // editorial | classic | modern
     if (!THEMES.includes(theme)) theme = 'amber';
     if (!MODES.includes(mode)) mode = 'dark';
+    if (!FONTS.includes(font)) font = 'editorial';
 
     const resolveMode = () => mode === 'system' ? (mql.matches ? 'light' : 'dark') : mode;
     const markTheme = () => opts.forEach(o => { const on = o.dataset.themeVal === theme; o.classList.toggle('active', on); o.setAttribute('aria-checked', on ? 'true' : 'false'); });
     const markMode = () => modeOpts.forEach(o => { const on = o.dataset.modeVal === mode; o.classList.toggle('active', on); o.setAttribute('aria-checked', on ? 'true' : 'false'); });
+    const markFont = () => fontOpts.forEach(o => { const on = o.dataset.fontVal === font; o.classList.toggle('active', on); o.setAttribute('aria-checked', on ? 'true' : 'false'); });
 
     // toast feedback (used mainly for keyboard cycling)
     const toast = document.createElement('div');
@@ -315,18 +320,21 @@
 
     const applyTheme = (save) => { if (theme === 'amber') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', theme); if (save) ls.set('theme', theme); markTheme(); };
     const applyMode = (save) => { root.setAttribute('data-mode', resolveMode()); if (save) ls.set('mode', mode); markMode(); };
+    const applyFont = (save) => { if (font === 'editorial') root.removeAttribute('data-font'); else root.setAttribute('data-font', font); if (save) ls.set('font', font); markFont(); };
 
-    applyTheme(false); applyMode(false);
+    applyTheme(false); applyMode(false); applyFont(false);
     mql.addEventListener ? mql.addEventListener('change', () => { if (mode === 'system') applyMode(false); })
                          : mql.addListener(() => { if (mode === 'system') applyMode(false); });
 
     const setTheme = (v, toastIt) => { theme = v; applyTheme(true); if (toastIt) flash(cap(v)); };
     const setMode = (v, toastIt) => { mode = v; applyMode(true); if (toastIt) flash(mode === 'system' ? 'System (' + resolveMode() + ')' : cap(v)); };
+    const setFont = (v, toastIt) => { font = v; applyFont(true); if (toastIt) flash(cap(v) + ' font'); };
 
     const close = () => { dock.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); };
     btn.addEventListener('click', (e) => { e.stopPropagation(); const open = dock.classList.toggle('open'); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); });
     opts.forEach(o => o.addEventListener('click', () => { setTheme(o.dataset.themeVal, false); close(); }));
     modeOpts.forEach(o => o.addEventListener('click', () => setMode(o.dataset.modeVal, false)));
+    fontOpts.forEach(o => o.addEventListener('click', () => setFont(o.dataset.fontVal, false)));
     document.addEventListener('click', (e) => { if (!dock.contains(e.target)) close(); });
 
     // Keyboard: press T to cycle accent themes, M to cycle light/dark/system
@@ -338,6 +346,7 @@
       const k = e.key.toLowerCase();
       if (k === 't') { e.preventDefault(); setTheme(THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length], true); }
       else if (k === 'm') { e.preventDefault(); setMode(MODES[(MODES.indexOf(mode) + 1) % MODES.length], true); }
+      else if (k === 'f') { e.preventDefault(); setFont(FONTS[(FONTS.indexOf(font) + 1) % FONTS.length], true); }
     });
   }
 

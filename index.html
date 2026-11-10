@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>try{var d=document.documentElement;var t=localStorage.getItem('theme');if(t&&t!=='amber')d.setAttribute('data-theme',t);var m=localStorage.getItem('mode')||'dark';var rm=m==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):m;d.setAttribute('data-mode',rm);}catch(e){}</script>
+  <script>try{var d=document.documentElement;var t=localStorage.getItem('theme');if(t&&t!=='amber')d.setAttribute('data-theme',t);var m=localStorage.getItem('mode')||'dark';var rm=m==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):m;d.setAttribute('data-mode',rm);var f=localStorage.getItem('font');if(f&&f!=='editorial')d.setAttribute('data-font',f);}catch(e){}</script>
   <title>Aditya Kumar · Operations &amp; Inventory</title>
   <meta name="description" content="Aditya Kumar — Operations and Inventory Manager. Runs dispatch, logistics and stock for 12+ clinic locations at GLEUHR Wellness. Previously scaled e-commerce revenue from ₹50L to ₹4.3Cr in 8 months, cut dispatch TAT from 48 hours to 24 hours, 98%+ on-time dispatch.">
   <meta property="og:title" content="Aditya Kumar · Operations & Inventory">
@@ -22,7 +22,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23111110'/><text x='50%' y='56%' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-size='34' fill='%23ff7a3d'>AK</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script>
     /* Always open at the top of the page, even after a refresh or with a #section in the address */
@@ -738,7 +738,13 @@
       <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="violet"><span class="sw" aria-hidden="true"><i style="background:#100f16"></i><i style="background:#a78bfa"></i><i style="background:#5fd0c2"></i></span><span class="to-name">Violet</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
       <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="ocean"><span class="sw" aria-hidden="true"><i style="background:#0c1016"></i><i style="background:#38bdf8"></i><i style="background:#69db7c"></i></span><span class="to-name">Ocean</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
       <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="emerald"><span class="sw" aria-hidden="true"><i style="background:#0d130f"></i><i style="background:#34d399"></i><i style="background:#fbbf24"></i></span><span class="to-name">Emerald</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
-      <p class="theme-pop-note">The dots show each theme's base, accent and success colors. Tip: press <b>T</b> to cycle themes, <b>M</b> for light / dark.</p>
+      <p class="theme-pop-h" style="padding-top:10px">Font</p>
+      <div class="font-seg" role="radiogroup" aria-label="Display font">
+        <button type="button" class="font-opt" role="radio" data-font-val="editorial" aria-checked="false"><span class="fo-aa" style="font-family:'Instrument Serif',Georgia,serif">Aa</span><span class="fo-name">Editorial</span></button>
+        <button type="button" class="font-opt" role="radio" data-font-val="classic" aria-checked="false"><span class="fo-aa" style="font-family:'Fraunces',Georgia,serif">Aa</span><span class="fo-name">Classic</span></button>
+        <button type="button" class="font-opt" role="radio" data-font-val="modern" aria-checked="false"><span class="fo-aa" style="font-family:'Space Grotesk','Inter',sans-serif;font-weight:500">Aa</span><span class="fo-name">Modern</span></button>
+      </div>
+      <p class="theme-pop-note">Swatches show each theme's base, accent and success colors. Tip: press <b>T</b> themes · <b>M</b> light/dark · <b>F</b> font.</p>
     </div>
   </div>
   <button type="button" class="to-top" id="toTop" aria-label="Back to top">
