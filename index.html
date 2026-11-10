@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>try{var t=localStorage.getItem('theme');if(t&&t!=='amber')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
   <title>Aditya Kumar · Operations &amp; Inventory</title>
   <meta name="description" content="Aditya Kumar — Operations and Inventory Manager. Runs dispatch, logistics and stock for 12+ clinic locations at GLEUHR Wellness. Previously scaled e-commerce revenue from ₹50L to ₹4.3Cr in 8 months, cut dispatch TAT from 48 hours to 24 hours, 98%+ on-time dispatch.">
   <meta property="og:title" content="Aditya Kumar · Operations & Inventory">
@@ -722,6 +723,18 @@
     <a class="cv-foot" href="Aditya_Kumar_CV.pdf" download><svg class="cv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M12 11v6M9.5 14.5L12 17l2.5-2.5"/></svg><span>Download CV <small>PDF</small></span></a>
   </footer>
 
+  <div class="theme-dock" id="themeDock">
+    <button type="button" class="theme-btn" id="themeBtn" aria-haspopup="true" aria-expanded="false" aria-controls="themePop" aria-label="Change color theme"><span class="tb-ring" aria-hidden="true"></span></button>
+    <div class="theme-pop" id="themePop" role="menu" aria-label="Color themes">
+      <p class="theme-pop-h">Color theme</p>
+      <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="amber"><span class="sw" aria-hidden="true"><i style="background:#111110"></i><i style="background:#ff7a3d"></i><i style="background:#69db7c"></i></span><span class="to-name">Amber</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
+      <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="rose"><span class="sw" aria-hidden="true"><i style="background:#130f11"></i><i style="background:#ff6b8a"></i><i style="background:#69db7c"></i></span><span class="to-name">Rose</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
+      <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="violet"><span class="sw" aria-hidden="true"><i style="background:#100f16"></i><i style="background:#a78bfa"></i><i style="background:#5fd0c2"></i></span><span class="to-name">Violet</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
+      <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="ocean"><span class="sw" aria-hidden="true"><i style="background:#0c1016"></i><i style="background:#38bdf8"></i><i style="background:#69db7c"></i></span><span class="to-name">Ocean</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
+      <button type="button" class="theme-opt" role="menuitemradio" data-theme-val="emerald"><span class="sw" aria-hidden="true"><i style="background:#0d130f"></i><i style="background:#34d399"></i><i style="background:#fbbf24"></i></span><span class="to-name">Emerald</span><svg class="to-chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>
+      <p class="theme-pop-note">Dark base + one accent. The dots show each theme's base, accent and success colors.</p>
+    </div>
+  </div>
   <button type="button" class="to-top" id="toTop" aria-label="Back to top">
     <svg class="tt-ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21"/><circle class="tt-prog" cx="24" cy="24" r="21" pathLength="100"/></svg>
     <svg class="tt-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></svg>

@@ -282,5 +282,35 @@
     tick(); setInterval(tick, 1000);
   }
 
+  // Color theme picker (dark themes). Applies data-theme on <html>, saves choice.
+  const dock = document.getElementById('themeDock');
+  if (dock) {
+    const btn = document.getElementById('themeBtn');
+    const opts = [...dock.querySelectorAll('.theme-opt')];
+    let current = 'amber';
+    try { current = localStorage.getItem('theme') || 'amber'; } catch (e) {}
+    const mark = (val) => opts.forEach(o => {
+      const on = o.dataset.themeVal === val;
+      o.classList.toggle('active', on);
+      o.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+    const apply = (val, save) => {
+      if (val === 'amber') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', val);
+      if (save) { try { localStorage.setItem('theme', val); } catch (e) {} }
+      mark(val);
+    };
+    apply(current, false);
+    const close = () => { dock.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); };
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = dock.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    opts.forEach(o => o.addEventListener('click', () => { apply(o.dataset.themeVal, true); close(); }));
+    document.addEventListener('click', (e) => { if (!dock.contains(e.target)) close(); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+
   $('yr').textContent = new Date().getFullYear();
 })();

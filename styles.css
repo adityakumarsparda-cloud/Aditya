@@ -17,6 +17,30 @@
   color-scheme: dark;
 }
 
+/* ---------- Color themes (dark) ----------
+   Logic: one dark base + one accent hue per theme. The accent carries
+   every highlight (links, numbers, active states); --accent-soft is its
+   low-glow fill for gradients and chips; --good stays a distinct success
+   hue so "positive" never collides with the accent. */
+:root[data-theme="rose"] {
+  --bg: #130f11; --surface: #1c181a; --surface-2: #241f21; --line: #322a2d;
+  --accent: #ff6b8a; --accent-soft: #3a1720; --good: #69db7c;
+}
+:root[data-theme="violet"] {
+  --bg: #100f16; --surface: #18171f; --surface-2: #201e2a; --line: #2d2a39;
+  --accent: #a78bfa; --accent-soft: #241b3a; --good: #5fd0c2;
+}
+:root[data-theme="ocean"] {
+  --bg: #0c1016; --surface: #141a22; --surface-2: #1b222c; --line: #273341;
+  --accent: #38bdf8; --accent-soft: #0f2a3d; --good: #69db7c;
+}
+:root[data-theme="emerald"] {
+  --bg: #0d130f; --surface: #151c17; --surface-2: #1c251f; --line: #27352c;
+  --accent: #34d399; --accent-soft: #0f2a1e; --good: #fbbf24;
+}
+body, .nav, .tile, .store, .card, .chip, .seek-chip, .btn, .ops-btn,
+.store-img, .accent, em, .kicker, a { transition: background-color .45s ease, border-color .45s ease, color .45s ease, fill .45s ease; }
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 body {
@@ -953,3 +977,23 @@ body.building .to-top { opacity: 0; pointer-events: none; }
 .sw-tbox.done, .sw-caret.done { opacity: 0; }
 @keyframes sw-blink { 50% { background: transparent; } }
 body.building .sw-pill { top: 88px; }
+
+/* ---------- Theme picker ---------- */
+.theme-dock { position: fixed; left: 20px; bottom: 22px; z-index: 60; }
+.theme-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; cursor: pointer; box-shadow: 0 10px 28px rgb(0 0 0 / .35); transition: transform .2s ease, border-color .2s ease; }
+.theme-btn:hover { transform: translateY(-2px); border-color: var(--accent); }
+.theme-btn .tb-ring { width: 22px; height: 22px; border-radius: 50%; background: conic-gradient(from 210deg, var(--accent), var(--good), var(--accent)); box-shadow: inset 0 0 0 4px var(--surface); }
+.theme-pop { position: absolute; left: 0; bottom: 58px; width: 232px; padding: 12px; border-radius: 16px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(14px); box-shadow: 0 18px 46px rgb(0 0 0 / .5); opacity: 0; visibility: hidden; transform: translateY(8px) scale(.97); transform-origin: bottom left; transition: opacity .22s ease, transform .22s ease, visibility .22s; }
+.theme-dock.open .theme-pop { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+.theme-pop-h { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); padding: 2px 6px 8px; }
+.theme-opt { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px; border: 1px solid transparent; border-radius: 11px; background: none; cursor: pointer; text-align: left; color: var(--ink-2); }
+.theme-opt:hover { background: var(--surface-2); }
+.theme-opt.active { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: var(--surface-2); color: var(--ink); }
+.theme-opt .sw { display: inline-flex; flex-shrink: 0; }
+.theme-opt .sw i { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid var(--surface); margin-left: -5px; }
+.theme-opt .sw i:first-child { margin-left: 0; }
+.theme-opt .to-name { font: 500 13px var(--sans); flex: 1; }
+.theme-opt .to-chk { width: 16px; height: 16px; fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.theme-opt.active .to-chk { opacity: 1; }
+.theme-pop-note { font: 400 11px var(--sans); color: var(--ink-3); padding: 8px 6px 2px; line-height: 1.4; border-top: 1px solid var(--line); margin-top: 6px; }
+@media (max-width: 520px) { .theme-dock { left: 14px; bottom: 16px; } }
