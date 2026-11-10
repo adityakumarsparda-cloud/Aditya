@@ -17,29 +17,36 @@
   color-scheme: dark;
 }
 
-/* ---------- Color themes (dark) ----------
-   Logic: one dark base + one accent hue per theme. The accent carries
-   every highlight (links, numbers, active states); --accent-soft is its
-   low-glow fill for gradients and chips; --good stays a distinct success
-   hue so "positive" never collides with the accent. */
-:root[data-theme="rose"] {
-  --bg: #130f11; --surface: #1c181a; --surface-2: #241f21; --line: #322a2d;
-  --accent: #ff6b8a; --accent-soft: #3a1720; --good: #69db7c;
+/* ---------- Mode: base neutrals (dark is the :root default above) ---------- */
+:root[data-mode="light"] {
+  --bg: #f7f6f2; --surface: #ffffff; --surface-2: #efede7;
+  --ink: #1b1a17; --ink-2: #57544e; --ink-3: #8b887f; --line: #e4e1d9;
+  color-scheme: light;
 }
-:root[data-theme="violet"] {
-  --bg: #100f16; --surface: #18171f; --surface-2: #201e2a; --line: #2d2a39;
-  --accent: #a78bfa; --accent-soft: #241b3a; --good: #5fd0c2;
-}
-:root[data-theme="ocean"] {
-  --bg: #0c1016; --surface: #141a22; --surface-2: #1b222c; --line: #273341;
-  --accent: #38bdf8; --accent-soft: #0f2a3d; --good: #69db7c;
-}
-:root[data-theme="emerald"] {
-  --bg: #0d130f; --surface: #151c17; --surface-2: #1c251f; --line: #27352c;
-  --accent: #34d399; --accent-soft: #0f2a1e; --good: #fbbf24;
-}
+
+/* ---------- Accent themes (work in both modes) ----------
+   Logic: the mode sets the dark/light base; each theme swaps only the
+   accent hue (which carries every highlight) plus a distinct --good
+   success hue. --accent-soft is derived from --accent so its tint stays
+   on-hue in light and dark automatically. */
+:root[data-theme="rose"]    { --accent: #ff6b8a; }
+:root[data-theme="violet"]  { --accent: #a78bfa; --good: #5fd0c2; }
+:root[data-theme="ocean"]   { --accent: #38bdf8; }
+:root[data-theme="emerald"] { --accent: #34d399; --good: #fbbf24; }
+
+/* Light mode deepens each accent for contrast on the light base */
+:root[data-mode="light"]                       { --accent: #e85d1f; --good: #2f9e52; }
+:root[data-mode="light"][data-theme="rose"]    { --accent: #e23d6d; }
+:root[data-mode="light"][data-theme="violet"]  { --accent: #6d4bf0; --good: #0f9e8c; }
+:root[data-mode="light"][data-theme="ocean"]   { --accent: #0e8fd1; }
+:root[data-mode="light"][data-theme="emerald"] { --accent: #0f9d6b; --good: #c87a0a; }
+
+/* accent-soft: on-hue tint derived from the accent, per mode */
+:root                    { --accent-soft: color-mix(in srgb, var(--accent) 24%, #0a0a09); }
+:root[data-mode="light"] { --accent-soft: color-mix(in srgb, var(--accent) 13%, #ffffff); }
+
 body, .nav, .tile, .store, .card, .chip, .seek-chip, .btn, .ops-btn,
-.store-img, .accent, em, .kicker, a { transition: background-color .45s ease, border-color .45s ease, color .45s ease, fill .45s ease; }
+.store-img, .accent, em, .kicker, a { transition: background-color .4s ease, border-color .4s ease, color .4s ease, fill .4s ease; }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
@@ -1000,3 +1007,14 @@ body.building .sw-pill { top: 88px; }
 .theme-opt.active .to-chk { opacity: 1; }
 .theme-pop-note { font: 400 11px var(--sans); color: var(--ink-3); padding: 8px 6px 2px; line-height: 1.4; border-top: 1px solid var(--line); margin-top: 6px; }
 @media (max-width: 520px) { .theme-dock { left: 14px; bottom: 16px; } }
+
+/* ---------- Mode segmented control + theme toast ---------- */
+.mode-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin: 2px 2px 4px; border-radius: 11px; background: var(--surface-2); border: 1px solid var(--line); }
+.mode-opt { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; padding: 7px 4px; border: 0; border-radius: 8px; background: none; color: var(--ink-2); font: 500 11px var(--sans); cursor: pointer; transition: background .18s ease, color .18s ease; }
+.mode-opt svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.mode-opt:hover { color: var(--ink); }
+.mode-opt.active { background: var(--surface); color: var(--accent); box-shadow: 0 1px 4px rgb(0 0 0 / .2); }
+.theme-toast { position: fixed; left: 20px; bottom: 78px; z-index: 61; display: inline-flex; align-items: center; gap: 9px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(10px); color: var(--ink); font: 600 13px var(--sans); box-shadow: 0 10px 26px rgb(0 0 0 / .4); opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.theme-toast.show { opacity: 1; transform: translateY(0); }
+.theme-toast .tt-dot { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); }
+@media (max-width: 420px) { .theme-toast { left: 14px; bottom: 70px; } }

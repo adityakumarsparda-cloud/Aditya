@@ -285,31 +285,60 @@
   // Color theme picker (dark themes). Applies data-theme on <html>, saves choice.
   const dock = document.getElementById('themeDock');
   if (dock) {
+    const root = document.documentElement;
     const btn = document.getElementById('themeBtn');
     const opts = [...dock.querySelectorAll('.theme-opt')];
-    let current = 'amber';
-    try { current = localStorage.getItem('theme') || 'amber'; } catch (e) {}
-    const mark = (val) => opts.forEach(o => {
-      const on = o.dataset.themeVal === val;
-      o.classList.toggle('active', on);
-      o.setAttribute('aria-checked', on ? 'true' : 'false');
-    });
-    const apply = (val, save) => {
-      if (val === 'amber') document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme', val);
-      if (save) { try { localStorage.setItem('theme', val); } catch (e) {} }
-      mark(val);
-    };
-    apply(current, false);
+    const modeOpts = [...dock.querySelectorAll('.mode-opt')];
+    const THEMES = opts.map(o => o.dataset.themeVal);         // amber, rose, violet, ocean, emerald
+    const MODES = ['light', 'dark', 'system'];
+    const mql = matchMedia('(prefers-color-scheme: light)');
+    const ls = { get: (k, d) => { try { return localStorage.getItem(k) || d; } catch (e) { return d; } },
+                 set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+    let theme = ls.get('theme', 'amber');
+    let mode = ls.get('mode', 'dark');                         // light | dark | system (preference)
+    if (!THEMES.includes(theme)) theme = 'amber';
+    if (!MODES.includes(mode)) mode = 'dark';
+
+    const resolveMode = () => mode === 'system' ? (mql.matches ? 'light' : 'dark') : mode;
+    const markTheme = () => opts.forEach(o => { const on = o.dataset.themeVal === theme; o.classList.toggle('active', on); o.setAttribute('aria-checked', on ? 'true' : 'false'); });
+    const markMode = () => modeOpts.forEach(o => { const on = o.dataset.modeVal === mode; o.classList.toggle('active', on); o.setAttribute('aria-checked', on ? 'true' : 'false'); });
+
+    // toast feedback (used mainly for keyboard cycling)
+    const toast = document.createElement('div');
+    toast.className = 'theme-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+    toast.innerHTML = '<span class="tt-dot"></span><span class="tt-txt"></span>';
+    document.body.appendChild(toast);
+    const txt = toast.querySelector('.tt-txt');
+    let tTimer = 0;
+    const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const flash = (label) => { txt.textContent = label; toast.classList.add('show'); clearTimeout(tTimer); tTimer = setTimeout(() => toast.classList.remove('show'), 1400); };
+
+    const applyTheme = (save) => { if (theme === 'amber') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', theme); if (save) ls.set('theme', theme); markTheme(); };
+    const applyMode = (save) => { root.setAttribute('data-mode', resolveMode()); if (save) ls.set('mode', mode); markMode(); };
+
+    applyTheme(false); applyMode(false);
+    mql.addEventListener ? mql.addEventListener('change', () => { if (mode === 'system') applyMode(false); })
+                         : mql.addListener(() => { if (mode === 'system') applyMode(false); });
+
+    const setTheme = (v, toastIt) => { theme = v; applyTheme(true); if (toastIt) flash(cap(v)); };
+    const setMode = (v, toastIt) => { mode = v; applyMode(true); if (toastIt) flash(mode === 'system' ? 'System (' + resolveMode() + ')' : cap(v)); };
+
     const close = () => { dock.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); };
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const open = dock.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    opts.forEach(o => o.addEventListener('click', () => { apply(o.dataset.themeVal, true); close(); }));
+    btn.addEventListener('click', (e) => { e.stopPropagation(); const open = dock.classList.toggle('open'); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+    opts.forEach(o => o.addEventListener('click', () => { setTheme(o.dataset.themeVal, false); close(); }));
+    modeOpts.forEach(o => o.addEventListener('click', () => setMode(o.dataset.modeVal, false)));
     document.addEventListener('click', (e) => { if (!dock.contains(e.target)) close(); });
-    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+    // Keyboard: press T to cycle accent themes, M to cycle light/dark/system
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { close(); return; }
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const el = e.target; const tag = el && el.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (el && el.isContentEditable)) return;
+      const k = e.key.toLowerCase();
+      if (k === 't') { e.preventDefault(); setTheme(THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length], true); }
+      else if (k === 'm') { e.preventDefault(); setMode(MODES[(MODES.indexOf(mode) + 1) % MODES.length], true); }
+    });
   }
 
   $('yr').textContent = new Date().getFullYear();
